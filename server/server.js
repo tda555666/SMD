@@ -6,24 +6,26 @@ const cors = require("cors");
 
 //import conroller
 const userController = require("./controller/user");
+//listening on port
 const port = process.env.PORT || 3055;
+//import sevice of auth
+const AuthController = require('./services/auth');
 
 // Middleware
-
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
 app.use(
   cors({
   origin: ['http://localhost:5173'],
-  methods: ['GET', 'POST','GET'],
+  methods: ['GET', 'POST','DELETE'],
   credentials: true,
   })
 );
 
-
 //here starts the routing 
 app.post("/register", userController.register);
+
 
 
 //listening on port

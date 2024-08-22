@@ -21,6 +21,16 @@ const userController = {
             } catch (error) {
             res.status(500).json({ error: error.message });
             }
+    },
+
+    getUsers: async (req,res)=>{
+        try{
+            const user = await User.find()
+            res.status(200).json(user)
+        }catch(err){
+            console.error("There is an error:",err)
+            res.status(500).json({err: "Internal error"})
+        }
     }
 }
 module.exports = userController ; 
