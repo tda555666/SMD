@@ -1,4 +1,4 @@
-import SingUp from "./pages/SingUp/SingUp";
+import SignUp from "./pages/SignUp/SignUp";
 import Login from "./pages/Login/Login";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import About from "./pages/About/About";
@@ -15,7 +15,7 @@ const routes = (
       <Route path="/contacts" element={<Contacts />} />
       <Route path="/tasks" element={<Tasks />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/singup" element={<SingUp />} />
+      <Route path="/signup" element={<SignUp />} />
       <Route path="/dashboard" element={<Dashboard />} />
       {/* <Route path="*" element={<NotFound />} /> */}
     </Routes>
