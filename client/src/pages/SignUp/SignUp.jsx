@@ -65,7 +65,7 @@ export default function Register() {
       <div className="w-96 border rounded bg-white px-7 py-10 ">
         <form onSubmit={handleSubmit}>
           <h4 className="text-2xl font-semibold mb-7 text-primary">
-            Sing Up
+            Sign Up
           </h4>
           <div className="flex flex-col space-y-2">
           <input

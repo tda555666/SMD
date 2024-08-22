@@ -54,7 +54,7 @@ const Login = () => {
           <p className="text-sm mt-4 text-center">
             Not registered yet?{" "}
             <Link
-              to="/singup"
+              to="/signup"
               className="text-indigo-700 font-semibold underline"
             >
               Create an Account
