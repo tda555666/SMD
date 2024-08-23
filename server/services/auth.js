@@ -12,12 +12,9 @@ module.exports = {
     generateAccessToken: function(user) {
 
         return jwt.sign({
-            name: user.name,
             role: user.role,
-            img: user.img,
-            sport: user.sport,
             email: user.email
-        }, process.env.JWT_ACCESS_SECRET,
+        }, process.env.JWT_SECRET,
         {
             expiresIn: '10s'
         }
@@ -28,12 +25,9 @@ module.exports = {
     generateRefreshToken: function(user) {
 
         return jwt.sign({
-            name: user.name,
             role: user.role,
-            img: user.img,
-            sport: user.sport,
             email: user.email
-        }, process.env.JWT_REFRESH_SECRET,{
+        }, process.env.JWT_REFRESH,{
             expiresIn: '1d'
         })
 
@@ -48,16 +42,17 @@ module.exports = {
             
             // populate the field "role" only with the field "userType" 
             //      from the appropriate "role" document
-            let user = await User.findOne({email}).populate('role','userType').exec();
+            let user = await User.findOne({email});
             
             if (!user) {
                 return res.status(401).json({err: `Email ${email} not found`})
             }
 
-            let match = await bcrypt.compare(password, user.password);
+            // let match = await bcrypt.compare(password, user.password);
 
-            if (!match)
+            if (password !== user.password)
                 return res.status(401).json({err: `Invalid password ${password}`});
+            // if (!match)
 
             let accessToken = module.exports.generateAccessToken(user);
             let refreshToken = module.exports.generateRefreshToken(user);
