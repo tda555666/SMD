@@ -70,7 +70,6 @@ function About() {
   };
   return (
     <>
-      <Navbar />
       <div className="bg-black w-screen h-screen">
         <div className="w-3/4 m-auto">
           <h1 className="text-white text-center mt-4 text-4xl">about us</h1>

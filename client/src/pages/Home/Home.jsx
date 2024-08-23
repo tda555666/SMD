@@ -45,14 +45,14 @@
 // export default Home;
 
 import todo from "../../assets/imgs/todo.jpg";
-import Navbar from "@/components/Navbar/Navbar";
+
 import cover from "../../assets/imgs/todocover2.jpg";
 import { Link } from "react-router-dom";
 
 function Home() {
   return (
     <>
-      <Navbar />
+      
       <div
         className="relative min-h-screen flex flex-col justify-center items-center bg-cover bg-center"
         style={{ backgroundImage: `url(${todo})` }}

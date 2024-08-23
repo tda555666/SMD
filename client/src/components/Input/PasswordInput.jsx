@@ -26,6 +26,7 @@ const PasswordInput = ({ value, onChange, placeholder }) => {
                     onChange={onChange}
                     className="w-full text-sm bg-transparent rounded outline-none"
                     required
+                    name='password'
                 />
                 {isShowPassword ?(
                 <FaRegEye

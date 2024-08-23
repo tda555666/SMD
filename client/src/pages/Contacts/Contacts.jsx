@@ -1,14 +1,12 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {faLocationDot ,faPhone,faEnvelope} from '@fortawesome/free-solid-svg-icons'
 import contactus from '../../assets/imgs/contactus.png'
-import Navbar from '@/components/Navbar/Navbar'
 
 
 
 function Contacts() {
   return (
     <>
-  <Navbar/>
     <div className='flex items-center justify-center'>
       <div className='flex items-center justify-between w-128 border rounded bg-white shadow-xl mt-10 p-10'>
         <div className='flex flex-col space-y-4 p-4'>

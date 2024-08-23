@@ -6,9 +6,18 @@ import Contacts from "./pages/Contacts/Contacts";
 import Tasks from "./components/Tasks/Tasks";
 import Home from "./pages/Home/Home";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import Navbar from "./components/Navbar/Navbar";
+import { userContext } from "./context/userContext";
+import { useState } from "react";
 
-const routes = (
+function App() {
+
+  const [user , setUser ] = useState(localStorage.getItem('smdUser')? localStorage.getItem('smdUser'):{role:'guest'});
+
+  return (
+  <userContext.Provider value={{user}}>  
   <Router>
+    <Navbar />
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />
@@ -20,9 +29,8 @@ const routes = (
       {/* <Route path="*" element={<NotFound />} /> */}
     </Routes>
   </Router>
-);
-function App() {
-  return <>{routes}</>;
+</userContext.Provider>
+)
 }
 
 export default App;
