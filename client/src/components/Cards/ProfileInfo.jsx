@@ -2,6 +2,8 @@ import { getInitials } from '@/utils/helper';
 import PropTypes from 'prop-types';
 
 function ProfileInfo({ onLogout }) {
+    // return active user to guest , set user guest
+    // delete tokens from the storage , and in the server do a logout 
     ProfileInfo.propTypes = {
         onLogout: PropTypes.func.isRequired,
     };

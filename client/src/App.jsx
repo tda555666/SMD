@@ -17,7 +17,9 @@ function App() {
   return (
   <userContext.Provider value={{user}}>  
   <Router>
+    {/* navbar need to get the user as prop */}
     <Navbar />
+    {/* inside it needs to decide what guest need to see and what user see */}
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<About />} />

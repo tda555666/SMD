@@ -20,6 +20,9 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: new Date().getTime(),
   },
+  refreshToken: {
+    type: String
+  }
 });
 
 // Create a model based on the schema
