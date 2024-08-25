@@ -250,7 +250,6 @@ module.exports = {
  
         const refreshToken = req.body.token;
 
-        // send err if there is no token or it is invalid
         if (!refreshToken) {
             
             res.json({auth: false, message: `LOGGED OUT`});
