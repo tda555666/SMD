@@ -4,7 +4,9 @@ const app = express();
 require('./db/db');
 const cors = require("cors");
 const bodyParser = require('body-parser');
+
 const taskRoutes = require('./controller/tasks');
+
 
 //import conroller
 const userController = require("./controller/user");
@@ -29,7 +31,9 @@ app.use(
 app.use(bodyParser.json());
 
 //here starts the routing 
+
 app.post('/dashboard', taskRoutes.createTask);
+
 app.post("/register", userController.register);
 app.post("/login", AuthController.login);
 
