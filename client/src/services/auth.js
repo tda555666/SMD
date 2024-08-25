@@ -7,6 +7,8 @@ export const login = async (formData) => {
     try {
         
         const result = await axios.post(`${baseAPIURL}/login`, formData);
+        console.log(result);
+        
 
         const { accessToken, refreshToken } = result.data;
 
