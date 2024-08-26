@@ -1,7 +1,7 @@
 import PasswordInput from "../../components/Input/PasswordInput";
 import { validateEmail } from "../../utils/helper";
 import { Link ,useNavigate } from "react-router-dom";
-import { useState ,useContext} from "react";
+import { useState ,useContext ,useEffect } from "react";
 import { login } from "../../services/auth"
 import { userContext } from "../../context/userContext";
 
@@ -11,7 +11,7 @@ const Login = () => {
   const [ formData, setFormData ] = useState({email:'',password:''});
   const [ errMsg, setErrMsg ] = useState('');
   const navigate = useNavigate();
-  const { setUser } = useContext(userContext);
+  const { setUser , user} = useContext(userContext);
 
   const onChange = (e) => {
 
@@ -40,8 +40,10 @@ const Login = () => {
 
       console.log('IN LOGIN')
       if (result.status) {
+        let curr = JSON.parse(localStorage.getItem('smduser'));
+        console.log(curr);
+        setUser(curr)
         
-        setUser(JSON.parse(localStorage.getItem('smduser')))
         setFormData({email:'',password:''});
         navigate('/dashboard');
 
@@ -53,6 +55,10 @@ const Login = () => {
 
     }
   };
+
+  useEffect(() => {
+    console.log('Updated User:', user);
+  }, [user]);
 
   return (
     <>

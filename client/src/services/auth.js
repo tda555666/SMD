@@ -9,9 +9,6 @@ export const login = async (formData) => {
         
         const result = await axios.post(`${baseAPIURL}/login`, formData);
         console.log(result);
-        
-        
-        
 
         const { accessToken, refreshToken  } = result.data;
         let decoded = jwtDecode(accessToken);

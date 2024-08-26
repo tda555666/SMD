@@ -1,11 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
 import ProfileInfo from "../Cards/ProfileInfo";
 import SearchBar from "../SearchBar/SearchBar";
-import { useState } from "react";
+import { useState , useContext  } from "react";
+import { userContext } from "../../context/userContext";
 
 function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
+  const { user, setUser } = useContext(userContext);
   const onLogout = () => {
     navigate("/login");
   };
