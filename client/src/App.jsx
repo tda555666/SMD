@@ -47,7 +47,7 @@ function App() {
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard useId={user.id}/>} />
           {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>
       </Router>
