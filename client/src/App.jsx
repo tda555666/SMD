@@ -30,28 +30,30 @@ window.getAuthConfig = () => {
 }
 
 function App() {
-
-  const [user , setUser ] = useState(localStorage.getItem('smdUser')? localStorage.getItem('smdUser'):{role:'guest'});
+  const [user, setUser] = useState(() => {
+    const storedUser = localStorage.getItem('smdUser');
+    return storedUser ? JSON.parse(storedUser) : { role: 'guest' };
+    console.log('App User:', user);
+  });
 
   return (
-  <userContext.Provider value={{user}}>  
-  <Router>
-    {/* navbar need to get the user as prop */}
-    <Navbar />
-    {/* inside it needs to decide what guest need to see and what user see */}
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/about" element={<About />} />
-      <Route path="/contacts" element={<Contacts />} />
-      <Route path="/tasks" element={<Tasks />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<SignUp />} />
-      <Route path="/dashboard" element={<Dashboard useId={user.id} />} />
-      {/* <Route path="*" element={<NotFound />} /> */}
-    </Routes>
-  </Router>
-</userContext.Provider>
-)
+    <userContext.Provider value={{ user }}>
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contacts" element={<Contacts />} />
+          <Route path="/tasks" element={<Tasks />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          {/* <Route path="*" element={<NotFound />} /> */}
+        </Routes>
+      </Router>
+    </userContext.Provider>
+  );
 }
+
 
 export default App;
