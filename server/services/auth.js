@@ -12,8 +12,11 @@ module.exports = {
     generateAccessToken: function(user) {
 
         return jwt.sign({
+            id : user._id ,
             role: user.role,
-            email: user.email
+            email: user.email ,
+            username: user.username ,
+
         }, process.env.JWT_SECRET,
         {
             expiresIn: '10s'
@@ -25,8 +28,10 @@ module.exports = {
     generateRefreshToken: function(user) {
 
         return jwt.sign({
+            id : user._id ,
             role: user.role,
-            email: user.email
+            email: user.email ,
+            username: user.username ,
         }, process.env.JWT_REFRESH,{
             expiresIn: '1d'
         })
@@ -56,6 +61,7 @@ module.exports = {
 
             let accessToken = module.exports.generateAccessToken(user);
             let refreshToken = module.exports.generateRefreshToken(user);
+            
 
             // We don't keep accessToken at the backend,
             // But we keep refreshToken:
