@@ -10,6 +10,25 @@ import Navbar from "./components/Navbar/Navbar";
 import { userContext } from "./context/userContext";
 import { useState } from "react";
 
+window.baseAPIURL = 'http://localhost:3055';
+window.config = {
+  headers:{
+    "content-type": 'application/json;charset=utf-8'
+  }
+};
+window.getAuthConfig = () => {
+  // return authorization header with jwt token
+  let accessToken = localStorage.getItem('auth-access-token');
+  
+  if (accessToken) {
+      return { ...config, headers: {...config.headers,
+                                       authorization: `Bearer ${accessToken}` }}
+  } else {
+      return config;
+  };
+  
+}
+
 function App() {
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem('smdUser');
@@ -28,7 +47,7 @@ function App() {
           <Route path="/tasks" element={<Tasks />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard useId={user.id}/>} />
           {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>
       </Router>

@@ -1,16 +1,19 @@
 import Notecard from "@/components/Cards/Notecard";
 import Navbar from "@/components/Navbar/Navbar";
 import AddEditToDo from "./AddEditToDo";
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import Modal from "react-modal";
 import { MdAdd } from "react-icons/md";
+import { getData } from "@/services/getData";
 
-const Dashboard = () => {
+const Dashboard = ({userId}) => {
     const [openAddEditModal, setOpenAddEditModal] = useState({
         isShow: false,
         type: "add",
         data: null,
     });
+
+    const[tasks,setTasks] = useState([])
 
     const handleCloseModal = () => {
         setOpenAddEditModal({
@@ -20,10 +23,32 @@ const Dashboard = () => {
         });
     };
 
+    useEffect(()=> {
+        (async function() {
+             let result = await getData( userId , 'tasks')
+            if(result.status){setTasks(result.data)}
+            //to be done:handle result status fulse
+        })();
+    },[])
+
+    const cardsArr = tasks.length===0 ? <p>no more tasks</p> : 
+        tasks.map((t,id)=> <Notecard 
+        key={id}
+        title={t.title}
+        date="13th August 2024"
+        content={t.content}
+        tags={t.tags}
+        isPinned={true}
+        onEdit={() => {}}
+        onDelete={() => {}}
+        onPinNote={() => {}}
+    />)
+
     return (
         <>
             <div className="container mx-auto">
                 <div className="grid grid-cols-3 gap-4 mt-8">
+                    {cardsArr}
                     <Notecard
                         title="Notecard 1 Meeting on 13th August 2024"
                         date="13th August 2024"

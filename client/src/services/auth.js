@@ -1,9 +1,7 @@
 import axios from 'axios';
 
-const baseAPIURL = 'http://localhost:3055';
 
-
-export const login = async (formData) => {
+export const getData = async (formData) => {
     try {
         
         const result = await axios.post(`${baseAPIURL}/login`, formData);
