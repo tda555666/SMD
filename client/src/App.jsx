@@ -9,34 +9,51 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Navbar from "./components/Navbar/Navbar";
 import { userContext } from "./context/userContext";
 import { useState } from "react";
-import PrivateRoute from "./components/routeuser";
+
+window.baseAPIURL = 'http://localhost:3055';
+window.config = {
+  headers:{
+    "content-type": 'application/json;charset=utf-8'
+  }
+};
+window.getAuthConfig = () => {
+  // return authorization header with jwt token
+  let accessToken = localStorage.getItem('auth-access-token');
+  
+  if (accessToken) {
+      return { ...config, headers: {...config.headers,
+                                       authorization: `Bearer ${accessToken}` }}
+  } else {
+      return config;
+  };
+  
+}
 
 function App() {
   const [user, setUser] = useState(() => {
-    const storedUser = localStorage.getItem('smduser');
+    const storedUser = localStorage.getItem('smdUser');
     return storedUser ? JSON.parse(storedUser) : { role: 'guest' };
+    console.log('App User:', user);
   });
-  console.log(localStorage.getItem('smduser'));
-  console.log(user);
-  
 
   return (
-    <userContext.Provider value={{ user, setUser }}>
+    <userContext.Provider value={{ user }}>
       <Router>
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/contacts" element={<Contacts />} />
-          <Route path="/login" element={user.role === 'guest' ? <Login /> : <Navigate to="/dashboard" />} />
-          <Route path="/signup" element={user.role === 'guest' ? <SignUp /> : <Navigate to="/dashboard" />} />
-          <Route path="/tasks" element={<PrivateRoute element={<Tasks />} />} />
-          <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
-          <Route path="*" element={<Navigate to={user.role !== 'guest' ? "/dashboard" : "/login"} />} />
+          <Route path="/tasks" element={<Tasks />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/dashboard" element={<Dashboard useId={user.id}/>} />
+          {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>
       </Router>
     </userContext.Provider>
   );
 }
+
 
 export default App;

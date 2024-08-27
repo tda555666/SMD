@@ -1,10 +1,8 @@
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
-const baseAPIURL = 'http://localhost:3055';
 
-
-export const login = async (formData) => {
+export const getData = async (formData) => {
     try {
         
         const result = await axios.post(`${baseAPIURL}/login`, formData);
