@@ -4,6 +4,8 @@ import SearchBar from "../SearchBar/SearchBar";
 import { useState , useContext  } from "react";
 import { userContext } from "../../context/userContext";
 
+
+
 function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
@@ -20,8 +22,8 @@ function Navbar() {
   return (
     <div className="bg-white flex items-center justify-between px-6 py-2 drop-shadow-md">
       <h2 className="text-2xl font-medium text-indigo-700">ToDo App</h2>
-      <ul className="flex ">
-        <li className="">
+      <ul className="flex">
+        <li>
           <Link to="/">Home</Link>
         </li>
         <li className="ml-5">
@@ -30,6 +32,11 @@ function Navbar() {
         <li className="ml-5">
           <Link to="/contacts">Contacts</Link>
         </li>
+        {user && user.role !== "guest" ? (
+          <li className="ml-5">
+          <Link to="/dashboard">Tasks</Link>
+          </li>
+        ) : null}
       </ul>
       <SearchBar
         value={searchQuery}
@@ -39,7 +46,6 @@ function Navbar() {
         handleSearch={handleSearch}
         onClearSearch={onClearSearch}
       />
-
       <ProfileInfo onLogout={onLogout} />
     </div>
   );

@@ -19,7 +19,7 @@ module.exports = {
 
         }, process.env.JWT_SECRET,
         {
-            expiresIn: '10s'
+            expiresIn: '300s'
         }
         )
         
@@ -94,6 +94,9 @@ module.exports = {
 
         let authPart = req.headers.authorization || req.headers.Authorization;
 
+        console.log(authPart);
+        
+
         if (!authPart || !authPart.startsWith('Bearer ')) 
             return res.status(401).json({auth:false,
              msg: `You're not authorized`})
@@ -104,7 +107,7 @@ module.exports = {
         let token = authPart.split(' ')[1];
 
         // jwt.verify returns the decoded payload
-        jwt.verify(token,process.env.JWT_ACCESS_SECRET,(err,user) => {
+        jwt.verify(token,process.env.JWT_SECRET,(err,user) => {
 
             if (err) 
                 return res.status(403).json({auth:false,

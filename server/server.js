@@ -31,12 +31,12 @@ app.use(
 app.use(bodyParser.json());
 
 //here starts the routing 
-app.get('/tasks/:userId', taskController.getTasks)
+app.get('/tasks/:userId', taskController.getTasks);
 app.post('/dashboard', taskController.createTask);
 
 app.post("/register", userController.register);
 app.post("/login", AuthController.login);
-
+app.patch('/user/:id', AuthController.verify, userController.updatePassword);
 
 
 

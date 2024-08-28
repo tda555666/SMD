@@ -35,10 +35,7 @@ const Dashboard = ({userId}) => {
         })();
     },[])
     
-    console.log("here comes the tasks");
-    
-    console.log(tasks);
-    
+
 
     const cardsArr = tasks.length===0 ? <p>no more tasks</p> : 
         tasks.map((t,id)=> <Notecard 
