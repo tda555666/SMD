@@ -44,15 +44,24 @@
 
 // export default Home;
 
+import { useContext } from "react";
+import { userContext } from "../../context/userContext";
 import todo from "../../assets/imgs/todo.jpg";
-
 import cover from "../../assets/imgs/todocover2.jpg";
 import { Link } from "react-router-dom";
 
 function Home() {
+  const { user } = useContext(userContext); // Access user from context
+
+  // Check if the user is logged in or if user has more than one entry
+
+  const userEntries = Object.entries(user);
+
+  const isLoggedIn = user.role && user.role !== 'guest';
+  const shouldDisable = isLoggedIn || Object.keys(user).length > 1;
+
   return (
     <>
-      
       <div
         className="relative min-h-screen flex flex-col justify-center items-center bg-cover bg-center"
         style={{ backgroundImage: `url(${todo})` }}
@@ -68,7 +77,7 @@ function Home() {
           </h1>
 
           {/* Description */}
-          <p className="text-xl md:text-2xl text-white font-sans italic max-w-md">
+          <p className="text-xl md:text-2xl font-sans italic max-w-md text-white">
             Have you ever forgotten some important things? Have you forgotten
             important moments or anniversaries for your family? Don't worry, use
             this effective and free tasks tracker and to-do list & task manager
@@ -77,11 +86,27 @@ function Home() {
 
           {/* Buttons */}
           <div className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4">
-            <button className="text-[20px] px-[60px] py-[20px] bg-primary text-white font-semibold rounded-lg shadow-md mb-4 md:mb-0 md:mr-4 hover:bg-blue-700 hover:shadow-lg transition-transform transform hover:scale-105">
-              <Link to="/signup">Sign Up</Link>
+            <button
+              className={`text-[20px] px-[60px] py-[20px] bg-primary text-white font-semibold rounded-lg shadow-md mb-4 md:mb-0 md:mr-4 ${shouldDisable ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700 hover:shadow-lg transition-transform transform hover:scale-105'}`}
+              disabled={shouldDisable}
+            >
+              <Link
+                to="/signup"
+                className={`w-full h-full block ${shouldDisable ? 'pointer-events-none' : 'pointer-events-auto'}`}
+              >
+                Sign Up
+              </Link>
             </button>
-            <button className="text-[20px] px-[60px] py-[20px] bg-primary text-white font-semibold rounded-lg shadow-md mb-4 md:mb-0 md:mr-4 hover:bg-blue-700 hover:shadow-lg transition-transform transform hover:scale-105">
-              <Link to="/login">Log In</Link>
+            <button
+              className={`text-[20px] px-[60px] py-[20px] bg-primary text-white font-semibold rounded-lg shadow-md mb-4 md:mb-0 md:mr-4 ${shouldDisable ? 'opacity-50 cursor-not-allowed' : 'hover:bg-blue-700 hover:shadow-lg transition-transform transform hover:scale-105'}`}
+              disabled={shouldDisable}
+            >
+              <Link
+                to="/login"
+                className={`w-full h-full block ${shouldDisable ? 'pointer-events-none' : 'pointer-events-auto'}`}
+              >
+                Log In
+              </Link>
             </button>
           </div>
         </div>

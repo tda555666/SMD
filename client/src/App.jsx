@@ -1,6 +1,6 @@
 import SignUp from "./pages/SignUp/SignUp";
 import Login from "./pages/Login/Login";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes ,Navigate} from "react-router-dom";
 import About from "./pages/About/About";
 import Contacts from "./pages/Contacts/Contacts";
 import Tasks from "./components/Tasks/Tasks";
@@ -17,7 +17,6 @@ window.config = {
   }
 };
 window.getAuthConfig = () => {
-  // return authorization header with jwt token
   let accessToken = localStorage.getItem('auth-access-token');
   
   if (accessToken) {
@@ -37,7 +36,7 @@ function App() {
   });
 
   return (
-    <userContext.Provider value={{ user }}>
+    <userContext.Provider value={{ user ,setUser }}>
       <Router>
         <Navbar />
         <Routes>
