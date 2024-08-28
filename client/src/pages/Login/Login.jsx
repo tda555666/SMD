@@ -41,7 +41,6 @@ const Login = () => {
       console.log('IN LOGIN')
       if (result.status) {
         let curr = JSON.parse(localStorage.getItem('smdUser'));
-        console.log(curr);
         setUser(curr)
         
         setFormData({email:'',password:''});

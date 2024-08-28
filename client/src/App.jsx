@@ -1,6 +1,6 @@
 import SignUp from "./pages/SignUp/SignUp";
 import Login from "./pages/Login/Login";
-import { BrowserRouter as Router, Route, Routes ,Navigate} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import About from "./pages/About/About";
 import Contacts from "./pages/Contacts/Contacts";
 import Tasks from "./components/Tasks/Tasks";
@@ -42,11 +42,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/contacts" element={<Contacts />} />
+          <Route path="/contacts" element={ <Contacts /> } />
           <Route path="/tasks" element={<Tasks />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/dashboard" element={<Dashboard useId={user.id}/>} />
+          <Route path="/login" element={user.role == "guest" ? <Login /> : <Dashboard />} />
+          <Route path="/signup" element={user.role == "guest" ? <SignUp /> : <Dashboard />} />
+          <Route path="/dashboard" element={<Dashboard userId={user.id}/>} />
           {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>
       </Router>
