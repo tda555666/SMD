@@ -19,7 +19,7 @@ getTasks: async (req, res) => {
     let userId = req.params.userId;
     try {
         // Add task to the database
-        const result = await task.findOne({userId});
+        const result = await task.find({userId});
         res.send(result);
     } catch (error) {
         res.status(500).json({ message:  error.message });

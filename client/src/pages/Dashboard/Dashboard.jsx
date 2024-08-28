@@ -26,16 +26,25 @@ const Dashboard = ({userId}) => {
     useEffect(()=> {
         (async function() {
              let result = await getData( userId , 'tasks')
-            if(result.status){setTasks(result.data)}
+             
+            if(result.status){
+                
+                setTasks(result.data)
+            }
             //to be done:handle result status fulse
         })();
     },[])
+    
+    console.log("here comes the tasks");
+    
+    console.log(tasks);
+    
 
     const cardsArr = tasks.length===0 ? <p>no more tasks</p> : 
         tasks.map((t,id)=> <Notecard 
         key={id}
         title={t.title}
-        date="13th August 2024"
+        date={t.createdAt}
         content={t.content}
         tags={t.tags}
         isPinned={true}
