@@ -1,5 +1,8 @@
 
 const User = require("../model/user");
+const { hashP } = require("../services/encrypt")
+
+
 
 const userController = {
 
@@ -33,16 +36,21 @@ const userController = {
         }
     },
 
-    getUser: async(req,res)=>{
+    updatePassword: async(req,res)=>{
         try{
-            const activeuser = await User.findOne(req.body);
-            console.log(activeuser);
-            
-            res.status(200).json(activeuser)
-        }catch(error){
-            console.error("There is an error:",error)
-            res.status(500).json({error: "Internal error"})
+
+            let passwd = await hashP(req.body.password);
+
+            const updatedUser = await User.findByIdAndUpdate(req.params.id, 
+                                                          {password: passwd},{
+                new:true
+            })
+            res.status(200).json(updatedUser)
         }
-    }
+        catch(err){
+            console.error("There is an error:",err)
+            res.status(500).json({err: err.message})
+        }
+    },
 }
 module.exports = userController ; 
