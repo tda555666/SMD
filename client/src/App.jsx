@@ -17,7 +17,6 @@ window.config = {
   }
 };
 window.getAuthConfig = () => {
-  // return authorization header with jwt token
   let accessToken = localStorage.getItem('auth-access-token');
   
   if (accessToken) {
@@ -37,7 +36,7 @@ function App() {
   });
 
   return (
-    <userContext.Provider value={{ user }}>
+    <userContext.Provider value={{ user ,setUser }}>
       <Router>
         <Navbar />
         <Routes>

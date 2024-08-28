@@ -15,7 +15,7 @@ export const getData = async (formData) => {
 
         localStorage.setItem('auth-access-token', accessToken);
         localStorage.setItem('auth-refresh-token', refreshToken);
-        localStorage.setItem('smduser',JSON.stringify(decoded));
+        localStorage.setItem('smdUser',JSON.stringify(decoded));
 
         return { status: true, msg: 'Login is successful' };
 
