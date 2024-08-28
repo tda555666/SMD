@@ -54,10 +54,12 @@ module.exports = {
             }
 
             // let match = await bcrypt.compare(password, user.password);
-
-            if (password !== user.password)
-                return res.status(401).json({err: `Invalid password ${password}`});
             // if (!match)
+            let match = await bcrypt.compare(password, user.password);
+
+            if (!match)
+                return res.status(401).json({err: `Invalid password ${password}`});
+
 
             let accessToken = module.exports.generateAccessToken(user);
             let refreshToken = module.exports.generateRefreshToken(user);
