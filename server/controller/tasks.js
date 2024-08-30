@@ -5,10 +5,14 @@ const TaskController = {
 // Create task
 createTask: async (req, res) => {
     // userid from current user
-    // const { title, content, tags ,userId } = req.body;
+    const { userId } = req.params;
+    const { title, content, tags } = req.body;
+
+    // Combine into a single object
+    const combinedData = {userId,title,content,tags};
     try {
         // Add task to the database
-        const result = await task.create(req.body);
+        const result = await task.create(combinedData);
         res.status(201).json({ message: 'Task added successfully', taskId: result.insertId });
     } catch (error) {
         res.status(500).json({ message:  error.message });
