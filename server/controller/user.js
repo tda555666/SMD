@@ -16,8 +16,9 @@ const userController = {
                 .status(400)
                 .json({ error: "Username or Email already exists" });
             }
+            let passwdreg = await hashP(password);
         
-            const user = new User({ username, email, password });
+            const user = new User({ username, email, password:passwdreg  });
             await user.save();
         
             res.status(201).json({ message: "User created successfully" });

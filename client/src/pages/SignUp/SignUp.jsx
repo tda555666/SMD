@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Register() {
   const [formData, setFormData] = useState({
@@ -9,6 +9,8 @@ export default function Register() {
     password: "",
     confirmPassword: "",
   });
+
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,8 +44,9 @@ export default function Register() {
       });
 
       const data = await response.json();
-      if (response.ok) {
+      if (response.ok) { 
         alert("Registration successful");
+        
         setFormData({
           username: "",
           email: "",
@@ -51,6 +54,8 @@ export default function Register() {
           password: "",
           confirmPassword: "",
         });
+        navigate("/")
+       
       } else {
         alert(`Error: ${data.error}`);
       }
