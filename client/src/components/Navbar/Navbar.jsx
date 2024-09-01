@@ -1,20 +1,31 @@
 import { Link, useNavigate } from "react-router-dom";
 import ProfileInfo from "../Cards/ProfileInfo";
 import SearchBar from "../SearchBar/SearchBar";
-import { useState , useContext  } from "react";
+import { useState, useContext } from "react";
 import { userContext } from "../../context/userContext";
-
-
 
 function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const { user, setUser } = useContext(userContext);
-  const onLogout = () => {
-    navigate("/login");
+
+  const handleLogout = () => {
+    // Clear user-related data from local storage
+    localStorage.removeItem('auth-access-token');
+    localStorage.removeItem('auth-refresh-token');
+    localStorage.removeItem('smdUser');
+
+    // Update user context or state
+    setUser("null");
+
+    // Redirect to login page
+    navigate("/");
   };
 
-  const handleSearch = () => {};
+  const handleSearch = () => {
+    // Add your search functionality here
+  };
+
   const onClearSearch = () => {
     setSearchQuery("");
   };
@@ -34,7 +45,7 @@ function Navbar() {
         </li>
         {user && user.role !== "guest" ? (
           <li className="ml-5">
-          <Link to="/dashboard">Tasks</Link>
+            <Link to="/dashboard">Tasks</Link>
           </li>
         ) : null}
       </ul>
@@ -46,7 +57,7 @@ function Navbar() {
         handleSearch={handleSearch}
         onClearSearch={onClearSearch}
       />
-      <ProfileInfo onLogout={onLogout} />
+      <ProfileInfo onLogout={handleLogout} />
     </div>
   );
 }
