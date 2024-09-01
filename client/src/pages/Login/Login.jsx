@@ -66,7 +66,14 @@ const Login = () => {
             <div className="flex flex-col space-y-2">
               <input name="email" type="text" placeholder="Email" value={formData.email} onChange={onChange} className="input-box" required/>
             </div>
+            <Link
+              to="/forgot-password"
+              className="text-indigo-700 font-semibold "
+            >
+            Forgot password?
+            </Link>
             <PasswordInput value={formData.password} name="password" onChange={onChange}/>
+            
 
             {error && <p className="text-red-500">{error}</p>}
             <button type="submit" className="btn-primary">
