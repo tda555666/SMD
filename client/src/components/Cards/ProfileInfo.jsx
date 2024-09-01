@@ -6,8 +6,6 @@ import { getInitials } from '@/utils/helper';
 
 function ProfileInfo({ onLogout }) {
   const { user } = useContext(userContext);
-  
-  console.log(user);
   let name = user && user.username ? user.username : ""; // Ensure user and username exist
 
   ProfileInfo.propTypes = {

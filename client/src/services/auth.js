@@ -20,7 +20,18 @@ export const getData = async (formData) => {
         return { status: true, msg: 'Login is successful' };
 
     } catch (err) {
-        console.log(err.message);
-        return { status: false, msg: err.message };
+        // Check if response exists to provide better error details
+        if (err.response) {
+            console.error('Response error:', err.response.data);
+            console.error('Response status:', err.response.status);
+            console.error('Response headers:', err.response.headers);
+            return { status: false, msg: err.response.data.message || 'An error occurred' };
+        } else if (err.request) {
+            console.error('Request error:', err.request);
+            return { status: false, msg: 'No response received from server' };
+        } else {
+            console.error('Error message:', err.message);
+            return { status: false, msg: err.message };
+        }
     }
 };
