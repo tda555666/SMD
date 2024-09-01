@@ -53,7 +53,6 @@ import { Link } from "react-router-dom";
 function Home() {
   const { user } = useContext(userContext);
 
- 
   const isLoggedIn = user && user.role !== 'guest';
 
   return (
@@ -62,17 +61,13 @@ function Home() {
         className="relative min-h-screen flex flex-col justify-center items-center bg-cover bg-center"
         style={{ backgroundImage: `url(${todo})` }}
       >
-        
         <div className="absolute inset-0 bg-black opacity-50"></div>
 
-       
         <div className="relative z-10 flex flex-col items-center justify-center text-center p-8 space-y-8 md:space-y-12">
-          
           <h1 className="text-4xl font-extrabold leading-none tracking-tight md:text-5xl lg:text-6xl text-white">
             WHAT IS TO DO LIST ?
           </h1>
 
-         
           <p className="text-xl md:text-2xl font-sans italic max-w-md text-white">
             Have you ever forgotten some important things? Have you forgotten
             important moments or anniversaries for your family? Don't worry, use
@@ -80,38 +75,32 @@ function Home() {
             free to help you manage time and enjoy an easy life.
           </p>
 
-         
           <div
             className="flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4"
             style={{ display: isLoggedIn ? 'none' : 'flex' }}
           >
-            <button
-              className="text-[20px] px-[60px] py-[20px] bg-primary text-white font-semibold rounded-lg shadow-md mb-4 md:mb-0 md:mr-4 hover:bg-blue-700 hover:shadow-lg transition-transform transform hover:scale-105"
-
+            <Link
+              to="/signup"
+              className="text-[20px] px-[60px] py-[20px] bg-primary text-white font-semibold rounded-lg shadow-md mb-4 md:mb-0 md:mr-4 hover:bg-blue-700 hover:shadow-lg transition-transform transform hover:scale-105 block text-center"
             >
-              <Link to="/signup" className="w-full h-full block">
-                Sign Up
-              </Link>
-            </button>
+              Sign Up
+            </Link>
 
-            <button
-              className="text-[20px] px-[60px] py-[20px] bg-primary text-white font-semibold rounded-lg shadow-md mb-4 md:mb-0 md:mr-4 hover:bg-blue-700 hover:shadow-lg transition-transform transform hover:scale-105"
+            <Link
+              to="/login"
+              className="text-[20px] px-[60px] py-[20px] bg-primary text-white font-semibold rounded-lg shadow-md mb-4 md:mb-0 md:mr-4 hover:bg-blue-700 hover:shadow-lg transition-transform transform hover:scale-105 block text-center"
             >
-              <Link to="/login" className="w-full h-full block">
-                Log In
-              </Link>
-            </button>
+              Log In
+            </Link>
           </div>
-
         </div>
 
-       
         <div className="relative z-10 flex flex-col items-center text-center p-8 md:w-2/3 lg:w-1/2">
           <h1 className="text-4xl font-extrabold leading-none tracking-tight md:text-5xl lg:text-6xl text-white">
             Organize your work <br /> and life, finally
           </h1>
           <h3 className="mt-4 text-lg md:text-xl lg:text-2xl text-gray-200">
-            Simplify life for both you and your team. The world’s #1 task <br />{" "}
+            Simplify life for both you and your team. The world’s #1 task <br />
             manager and to-do list app.
           </h3>
           <div className="mt-6">
