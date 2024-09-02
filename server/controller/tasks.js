@@ -1,7 +1,6 @@
 const task = require("../model/Task");
 
 const TaskController = {
-
 // Create task
 createTask: async (req, res) => {
     // userid from current user
@@ -29,10 +28,6 @@ getTasks: async (req, res) => {
         res.status(500).json({ message:  error.message });
     }
 },
-
 }
 
 module.exports = TaskController;
-
-
-

@@ -1,35 +1,50 @@
 import TagInput from "@/components/Input/TagInput";
-import { useState } from "react";
-import axios from "axios"; // Import axios for making HTTP requests
+import { useState, useContext } from "react";
+import axios from "axios";
+import { userContext } from "@/context/userContext"; // Ensure this import is correct
 
-const AddEditToDo = ({ onClose, type, initialData }) => {
-    const [tags, setTags] = useState(initialData ? initialData.tags.join(", ") : "");
+const AddEditToDo = ({ addTask, onClose, type, initialData }) => {
+    const { user } = useContext(userContext); // Get user context
+
+    // Initialize state for tags, title, and content
+    const [tags, setTags] = useState(
+        initialData && Array.isArray(initialData.tags) ? initialData.tags : []
+    );
     const [title, setTitle] = useState(initialData ? initialData.title : "");
     const [content, setContent] = useState(initialData ? initialData.content : "");
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!user || !user.id) {
+            console.error("User ID is not available.");
+            return;
+        }
         try {
             const response = await axios.post(
-                "/api/tasks", // Replace with your API endpoint
+                `${baseAPIURL}/tasks/${user.id}`, // Make sure baseAPIURL is defined
                 {
                     title,
                     content,
-                    tags: tags.split(", ").map(tag => tag.trim())
+                    tags: Array.isArray(tags) ? tags.map(tag => tag.trim()) : []
                 },
                 {
                     headers: {
-                        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`, // Use localStorage or other storage to get the token
+                        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
                         "Content-Type": "application/json"
                     }
                 }
             );
-            if (response.status === 200) {
-                // Assuming you want to refresh the page or redirect after successful task creation
-                window.location.reload(); // Or use a routing library to navigate to the task list
+            
+            if (response.status === 201) {
+                addTask({
+                    title,
+                    content,
+                    tags: Array.isArray(tags) ? tags.map(tag => tag.trim()) : []
+                });
+                onClose(); // Close the modal
             }
         } catch (error) {
-            console.error("Error adding task:", error);
+            console.error("Error adding task:", error.message);
         }
     };
 
@@ -37,7 +52,7 @@ const AddEditToDo = ({ onClose, type, initialData }) => {
         <div>
             <form onSubmit={handleSubmit}>
                 <div className='flex flex-col gap-2'>
-                    <label className='input-lable'>TITLE</label>
+                    <label className='input-label'>TITLE</label>
                     <input
                         type="text"
                         className='text-2xl text-slate-950 outline-none'
@@ -49,7 +64,7 @@ const AddEditToDo = ({ onClose, type, initialData }) => {
                 </div>
 
                 <div className="flex flex-col gap-2 mt-4">
-                    <label className="input-lable">CONTENT</label>
+                    <label className="input-label">CONTENT</label>
                     <textarea
                         className="text-sm text-slate-950 outline-none bg-slate-50 p-2 rounded"
                         placeholder="Content"
@@ -61,7 +76,7 @@ const AddEditToDo = ({ onClose, type, initialData }) => {
                 </div>
 
                 <div className="mt-3">
-                    <label className="input-lable">TAGS</label>
+                    <label className="input-label">TAGS</label>
                     <TagInput tags={tags} setTags={setTags} />
                 </div>
 
