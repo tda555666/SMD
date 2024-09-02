@@ -23,7 +23,7 @@ app.use(express.urlencoded({extended: true}))
 app.use(
   cors({
   origin: ['http://localhost:5173' ],
-  methods: ['GET', 'POST','DELETE'],
+  methods: ['GET', 'POST','DELETE','PATCH'],
   credentials: true,
   })
 );
@@ -39,6 +39,7 @@ app.put('/tasks/:userId/:taskId', taskController.editTask);
 app.post("/register", userController.register);
 app.post("/login", AuthController.login);
 app.patch('/user/:userId', AuthController.verify, userController.updatePassword);
+app.patch('/user-delete/:userId', userController.deleteRefresh);
 
 
 

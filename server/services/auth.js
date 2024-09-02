@@ -162,55 +162,7 @@ module.exports = {
         
     },
 
-    refresh: async function(req, res) {
-        // take the refresh token from the user 
-        //const cookies = req.cookies;
-        const email = req.body.email;
-        const refreshToken = req.body.refreshToken;
-
-        // send err if there is no token or it is invalid
-        if (!refreshToken) {
-            console.log(`\n*** NO REFRESH TOKEN ***\n`)
-            return res.status(401).json({auth: false, message: `You're not authenticated, no token`});
-        } 
-            
-        console.log(`\n********\nemail: ${email} \nrefreshToken: ${refreshToken}`)
-        
-        const user = await User.findOne({ refreshToken , email }).populate('role','userType').exec();
-        
-        console.log(`user:\n`,user)
-
-        if (!user) {
-            
-            console.log(`\n*** NO USER ***\n`)
-            
-            return res.status(401).json({auth: false, message: `Refresh token was not found`});    
-            
-        }
-        
-        try {
-
-            const jwtVerify = util.promisify(jwt.verify);
-
-            const decodedUser = await jwtVerify(refreshToken,process.env.JWT_REFRESH_SECRET);
-        
-        } catch (err) {
-
-            console.log(err)
-            console.log(err.message)
-                
-            console.log(`\n*** TOKEN NOT VERIFIED ***\n`)
-            return res.status(403).json({auth: false, 
-                                message: `Your session has been expired`});
-
-        }
-
-          //tbd try-catch
-
-        //res.cookie('jwt', newRefreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 });
-        res.send({auth:true,accessToken:newAccessToken,refreshToken:newRefreshToken});
     
-    },
 
     forgotPassword: async function(req,res) {
         // 1. get email - check that the user exists
