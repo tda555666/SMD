@@ -3,24 +3,31 @@ import ProfileInfo from "../Cards/ProfileInfo";
 import SearchBar from "../SearchBar/SearchBar";
 import { useState, useContext } from "react";
 import { userContext } from "../../context/userContext";
+import axios from "axios";
 
 function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
   const navigate = useNavigate();
   const { user, setUser } = useContext(userContext);
 
-  const handleLogout = () => {
-    // Clear user-related data from local storage
+  const handleLogout = async () => {
+
+    const user = JSON.parse(localStorage.getItem('smdUser'));
+
+    const response = await axios.patch(`${baseAPIURL}/user-delete/${user.id}`);
+
+    if (response.status !== 200) {
+        throw new Error('Failed to remove refresh token');
+    }
+
     localStorage.removeItem('auth-access-token');
     localStorage.removeItem('auth-refresh-token');
     localStorage.removeItem('smdUser');
 
-    // Update user context or state
     setUser("null");
 
-    // Redirect to login page
     navigate("/");
-  };
+  }
 
   const handleSearch = () => {
     // Add your search functionality here

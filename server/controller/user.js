@@ -18,7 +18,7 @@ const userController = {
             }
             let passwdreg = await hashP(password);
         
-            const user = new User({ username, email, password:passwdreg  });
+            const user = new User({ username, email, password :passwdreg  });
             await user.save();
         
             res.status(201).json({ message: "User created successfully" });
@@ -53,5 +53,26 @@ const userController = {
             res.status(500).json({err: err.message})
         }
     },
+    deleteRefresh: async(req,res)=> {
+        try {
+            const userId = req.params.userId;
+
+            let user = await User.findById(userId);
+    
+            if (user.refreshToken) {
+               
+                user.refreshToken = "";
+    
+                // Save the updated user document
+                const updatedUser = await user.save();
+    
+                res.status(200).json({ message: "Refresh token removed", updatedUser });
+            }
+        }
+        catch(err){
+            console.error("There is an error:",err)
+            res.status(500).json({err: err.message})
+        }
+    }
 }
 module.exports = userController ; 

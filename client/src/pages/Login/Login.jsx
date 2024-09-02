@@ -37,19 +37,19 @@ const Login = () => {
     if (Object.values(formData).every(v => v)) {
       try {
         const result = await getData(formData);
-        console.log('Result:', result); // Add this line to check result structure
+        console.log('Result:', result); 
         if (result.status) {
           let curr = JSON.parse(localStorage.getItem('smdUser'));
-          console.log('Current User:', curr); // Add this line to check localStorage data
+          console.log('Current User:', curr); 
           setUser(curr);
           setFormData({email:'',password:''});
           navigate('/dashboard');
         } else {
           setErrMsg(result.message);
-          console.error('Error message:', result.message); // Add this line to log error messages
+          console.error('Error message:', result.message);
         }
       } catch (error) {
-        console.error('Error in getData:', error); // Add this line to catch and log any errors
+        console.error('Error in getData:', error); 
         setError('An unexpected error occurred.');
       }
 

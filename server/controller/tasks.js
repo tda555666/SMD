@@ -31,9 +31,6 @@ getTasks: async (req, res) => {
 <<<<<<<<< Temporary merge branch 1
 =========
 //need to get the user id and the task id
-
-
-
 deleteTask: async (req, res) => {
     // userid from current user
     let {taskId} = req.body
