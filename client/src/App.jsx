@@ -17,10 +17,13 @@ window.config = {
 };
 window.getAuthConfig = () => {
   let accessToken = localStorage.getItem('auth-access-token');
+  let refreshToken = localStorage.getItem('auth-refresh-token');
+  
   
   if (accessToken) {
       return { ...config, headers: {...config.headers,
-                                       authorization: `Bearer ${accessToken}` }}
+                                       authorization: `Bearer ${accessToken}`,
+                                       refresh: refreshToken }}
   } else {
       return config;
   };
@@ -31,13 +34,6 @@ function App() {
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem('smdUser');
     return storedUser ? JSON.parse(storedUser) : { role: 'guest' };
-    console.log('App User:', user);
-
-    if (user === undefined || user === null) {
-      return (
-        navigate("/")
-      )
-    }
   });
 
   return (
@@ -48,8 +44,8 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/contacts" element={ <Contacts /> } />
-          <Route path="/login" element={user.role == "guest" || "" || "null" ? <Login /> : <Dashboard userId={user.id}/>} />
-          <Route path="/signup" element={user.role == "guest" || "" || "null" ? <SignUp /> : <Dashboard userId={user.id}/>} />
+          <Route path="/login" element={user.role == "guest"  ? <Login /> : <Dashboard userId={user.id}/>} />
+          <Route path="/signup" element={user.role == "guest"  ? <SignUp /> : <Dashboard userId={user.id}/>} />
           <Route path="/dashboard" element={<Dashboard userId={user.id}/>} />
           {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>

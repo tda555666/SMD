@@ -18,7 +18,7 @@ createTask: async (req, res) => {
     }
 },
 getTasks: async (req, res) => {
-    // userid from current user
+    const taskId = req.body
     let userId = req.params.userId;
     try {
         // Add task to the database
@@ -28,6 +28,37 @@ getTasks: async (req, res) => {
         res.status(500).json({ message:  error.message });
     }
 },
+//need to get the user id and the task id
+
+
+
+deleteTask: async (req, res) => {
+    // userid from current user
+    let {taskId} = req.body
+    try {
+        const result = await task.findByIdAndDelete(taskId);
+        res.status(204).send()
+    } catch (error) {
+        res.status(500).json({ message:  error.message });
+    }
+},
+editTask: async (req, res) => {
+    const { userId, taskId } = req.params;
+    const { title, content, tags } = req.body;
+
+    try {
+        const task = await task.findById(taskId);
+
+        if (title !== undefined) task.title = title;
+        if (content !== undefined) task.content = content;
+        if (tags !== undefined) task.tags = tags;
+        const updatedTask = await task.save();
+
+        res.status(200).json({ message: 'Task updated successfully', task: updatedTask });
+    } catch (error) {
+        res.status(500).json({ message:  error.message });
+    }
+}
 }
 
 module.exports = TaskController;
