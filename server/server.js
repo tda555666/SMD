@@ -31,17 +31,11 @@ app.use(
 app.use(bodyParser.json());
 
 //here starts the routing 
-<<<<<<<<< Temporary merge branch 1
-app.get('/tasks/:userId', taskController.getTasks);
-app.post('/tasks/:userId', taskController.createTask);
-app.delete('/tasks/:userId', taskController.deleteTask);
-app.patch('/tasks/:userId', taskController.editTask);
-=========
+
 app.get('/tasks/:userId', AuthController.verify, taskController.getTasks);
 app.post('/tasks/:userId', AuthController.verify, taskController.createTask);
 app.delete('/tasks/:userId', taskController.deleteTask);
 app.put('/tasks/:userId/:taskId', taskController.editTask);
->>>>>>>>> Temporary merge branch 2
 
 app.post("/register", userController.register);
 app.post("/login", AuthController.login);
