@@ -42,7 +42,7 @@ const userController = {
 
             let passwd = await hashP(req.body.password);
 
-            const updatedUser = await User.findByIdAndUpdate(req.params.id, 
+            const updatedUser = await User.findByIdAndUpdate(req.params.userId, 
                                                           {password: passwd},{
                 new:true
             })

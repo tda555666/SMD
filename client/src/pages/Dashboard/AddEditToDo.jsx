@@ -27,12 +27,9 @@ const AddEditToDo = ({ addTask, onClose, type, initialData }) => {
                     content,
                     tags: Array.isArray(tags) ? tags.map(tag => tag.trim()) : []
                 },
-                {
-                    headers: {
-                        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
-                        "Content-Type": "application/json"
-                    }
-                }
+
+                getAuthConfig()
+
             );
             
             if (response.status === 201) {
