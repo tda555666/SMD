@@ -27,7 +27,9 @@ const AddEditToDo = ({ addTask, onClose, type, initialData }) => {
                     content,
                     tags: Array.isArray(tags) ? tags.map(tag => tag.trim()) : []
                 },
+
                 getAuthConfig()
+
             );
             
             if (response.status === 201) {

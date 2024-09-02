@@ -28,6 +28,7 @@ getTasks: async (req, res) => {
         res.status(500).json({ message:  error.message });
     }
 },
+
 //need to get the user id and the task id
 
 
@@ -60,5 +61,9 @@ editTask: async (req, res) => {
     }
 }
 }
+
+
+
+
 
 module.exports = TaskController;
