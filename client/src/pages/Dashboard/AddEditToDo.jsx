@@ -27,7 +27,16 @@ const AddEditToDo = ({ addTask, onClose, type, initialData }) => {
                     content,
                     tags: Array.isArray(tags) ? tags.map(tag => tag.trim()) : []
                 },
+<<<<<<<<< Temporary merge branch 1
+                {
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("accessToken")}`,
+                        "Content-Type": "application/json"
+                    }
+                }
+=========
                 getAuthConfig()
+>>>>>>>>> Temporary merge branch 2
             );
             
             if (response.status === 201) {
