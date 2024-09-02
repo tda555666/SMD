@@ -31,40 +31,34 @@ const Dashboard = ({userId}) => {
                 
                 setTasks(result.data)
             }
-            //to be done:handle result status fulse
         })();
     },[])
     
 
+    function addTask(newTask){
+        setTasks([...tasks, newTask])
+    }
 
     const cardsArr = tasks.length===0 ? <p>no more tasks</p> : 
-        tasks.map((t,id)=> <Notecard 
-        key={id}
-        title={t.title}
-        date={t.createdAt}
-        content={t.content}
-        tags={t.tags}
-        isPinned={true}
-        onEdit={() => {}}
-        onDelete={() => {}}
-        onPinNote={() => {}}
-    />)
+        tasks.map((t,id)=> (
+        <Notecard 
+            key={id}
+            title={t.title}
+            date={t.createdAt}
+            content={t.content}
+            tags={t.tags.join(', ')}
+            isPinned={true}
+            onEdit={() => {}}
+            onDelete={() => {}}
+            onPinNote={() => {}}
+        />
+    ));
 
     return (
         <>
             <div className="container mx-auto">
                 <div className="grid grid-cols-3 gap-4 mt-8">
                     {cardsArr}
-                    <Notecard
-                        title="Notecard 1 Meeting on 13th August 2024"
-                        date="13th August 2024"
-                        content="Meeting with the team to discuss the project"
-                        tags={["tag1", "tag2"]}
-                        isPinned={true}
-                        onEdit={() => {}}
-                        onDelete={() => {}}
-                        onPinNote={() => {}}
-                    />
                 </div>
             </div>
 
@@ -92,7 +86,10 @@ const Dashboard = ({userId}) => {
                 contentLabel=""
                 className="w-[40%] max-h-3/4 bg-white rounded-md mx-auto mt-14 p-5 overflow-scroll"
             >
-                <AddEditToDo onClose={handleCloseModal} type={openAddEditModal.type} initialData={openAddEditModal.data} />
+                <AddEditToDo onClose={handleCloseModal} 
+                                type={openAddEditModal.type} 
+                                initialData={openAddEditModal.data} 
+                                addTask={addTask}/>
             </Modal>
         </>
     );
