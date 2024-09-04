@@ -24,9 +24,13 @@ window.getAuthConfig = () => {
       return { ...config, headers: {...config.headers,
                                        authorization: `Bearer ${accessToken}`,
                                        refresh: refreshToken }}
-  } else {
-      return config;
-  };
+
+  }else{
+    return config;
+  }
+  
+      
+  
   
 }
 
@@ -46,7 +50,7 @@ function App() {
           <Route path="/contacts" element={ <Contacts /> } />
           <Route path="/login" element={user.role == "guest"  ? <Login /> : <Dashboard userId={user.id}/>} />
           <Route path="/signup" element={user.role == "guest"  ? <SignUp /> : <Dashboard userId={user.id}/>} />
-          <Route path="/dashboard" element={<Dashboard userId={user.id}/>} />
+          <Route path="/dashboard" element={user.role == "guest"  ? " " :<Dashboard userId={user.id}/>} />
           {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>
       </Router>

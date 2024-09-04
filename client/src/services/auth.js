@@ -2,7 +2,7 @@ import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 
 
-export const getData = async (formData) => {
+export const login = async (formData) => {
     try {
         
         const result = await axios.post(`${baseAPIURL}/login`, formData);
@@ -35,4 +35,11 @@ export const getData = async (formData) => {
         }
     }
 };
+
+export const updateTokens = (tokens) => {
+
+    localStorage.setItem('auth-access-token', tokens.newAccessToken);
+    localStorage.setItem('auth-refresh-token', tokens.newRefreshToken);
+
+}
 

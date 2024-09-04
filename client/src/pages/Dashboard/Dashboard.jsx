@@ -42,7 +42,7 @@ const Dashboard = ({userId}) => {
     const cardsArr = tasks.length===0 ? <p>no more tasks</p> : 
         tasks.map((t,id)=> (
         <Notecard 
-            key={id}
+            key={t._id}
             title={t.title}
             date={t.createdAt}
             content={t.content}
@@ -52,7 +52,10 @@ const Dashboard = ({userId}) => {
             onDelete={() => {}}
             onPinNote={() => {}}
         />
+        
+        
     ));
+    
 
     return (
         <>

@@ -119,8 +119,8 @@ module.exports = {
         }catch (err){
             if(!refresh){
                 return res.status(401).json({auth:false,
-                    msg: `The token has been expired and no refresh token , you not authenticated`,
-                err:err.message})
+                    msg: `The token has been expired and no refresh token , you not authenticated`
+                })
             }
             
             try{
@@ -128,8 +128,8 @@ module.exports = {
                 
                 if(!user2){
                     return res.status(401).json({auth:false,
-                        msg: `The token has been expired and refresh not in db, you not authenticated`,
-                        err:err.message})
+                        msg: `The token has been expired and refresh not in db, you not authenticated`
+                        })
                         
                 }
 
@@ -137,8 +137,8 @@ module.exports = {
 
             }catch (err){
                 return res.status(403).json({auth:false,
-                    msg: `The both tokens have been expired`,
-                err:err.message});  
+                    msg: `The both tokens have been expired`
+                });  
             
             }
         }
@@ -146,18 +146,18 @@ module.exports = {
          // for some useful case, let's add the decoded payload to the request
          // for the sake of the next function     
         req.user = user;
-        res.newAccessToken = module.exports.generateAccessToken(user);
-        res.newRefreshToken = module.exports.generateRefreshToken(user);
+        req.newAccessToken = module.exports.generateAccessToken(user);
+        req.newRefreshToken = module.exports.generateRefreshToken(user);
          
         try{
             const updatedUser = await User.findByIdAndUpdate(user.id, 
-            {refreshToken:newRefreshToken},{ new:true }) 
+            {refreshToken:req.newRefreshToken},{ new:true }) 
             next();    
 
         }catch(err){
             return res.status(500).json({auth:false,
-                msg: `could not update refresh token in db`,
-            err:err.message});
+                msg: `could not update refresh token in db , \n ${err.message}`
+            });
         }
         
     },
