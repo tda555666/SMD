@@ -24,7 +24,7 @@ function Navbar() {
     localStorage.removeItem('auth-refresh-token');
     localStorage.removeItem('smdUser');
 
-    setUser("null");
+    setUser({ role: 'guest' });
 
     navigate("/");
   }
@@ -50,7 +50,7 @@ function Navbar() {
         <li className="ml-5">
           <Link to="/contacts">Contacts</Link>
         </li>
-        {user && user.role !== "guest" ? (
+        { user.role !== "guest" ? (
           <li className="ml-5">
             <Link to="/dashboard">Tasks</Link>
           </li>

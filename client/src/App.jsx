@@ -50,7 +50,7 @@ function App() {
           <Route path="/contacts" element={ <Contacts /> } />
           <Route path="/login" element={user.role == "guest"  ? <Login /> : <Dashboard userId={user.id}/>} />
           <Route path="/signup" element={user.role == "guest"  ? <SignUp /> : <Dashboard userId={user.id}/>} />
-          <Route path="/dashboard" element={user.role == "guest"  ? " " :<Dashboard userId={user.id}/>} />
+          <Route path="/dashboard" element={user.role == "guest"  ? <Login /> :<Dashboard userId={user.id}/>} />
           {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>
       </Router>
