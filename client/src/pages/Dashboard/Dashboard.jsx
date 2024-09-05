@@ -1,10 +1,9 @@
 import Notecard from "@/components/Cards/Notecard";
-import Navbar from "@/components/Navbar/Navbar";
 import AddEditToDo from "./AddEditToDo";
 import { useState , useEffect} from "react";
 import Modal from "react-modal";
 import { MdAdd } from "react-icons/md";
-import { getData } from "@/services/getData";
+import { getData , deleteTask} from "@/services/getData";
 
 const Dashboard = ({userId,setUser}) => {
     const [openAddEditModal, setOpenAddEditModal] = useState({
@@ -30,9 +29,31 @@ const Dashboard = ({userId,setUser}) => {
             if(result.status){
                 
                 setTasks(result.data)
+                console.log(result.data[0]);
+                console.log('this is tasks' + tasks);
+                
+                
             }
         })();
     },[])
+
+    const handleDelete = async (taskId, tasks) => {
+        try {
+            await deleteTask(taskId);
+            setTasks(tasks.filter(task => task._id !== taskId)); 
+        } catch (error) {
+            console.error('Error during task deletion:', error);
+        }
+    };
+
+    const handleCheckboxChange = (taskId) => (event) => {
+        const isChecked = event.target.checked;
+        setTasks(tasks.map(task =>
+          task._id === taskId ? { ...task, isChecked } : task
+        ));
+      };
+
+   
     
 
     function addTask(newTask){
@@ -49,8 +70,9 @@ const Dashboard = ({userId,setUser}) => {
             tags={t.tags.join(', ')}
             isPinned={true}
             onEdit={() => {}}
-            onDelete={() => {}}
+            onDelete={() =>  handleDelete(t._id, tasks)}
             onPinNote={() => {}}
+            onCheckboxChange={() => {handleCheckboxChange(t._id)}}
         />
         
         
