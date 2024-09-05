@@ -37,7 +37,6 @@ app.post('/tasks/:userId', AuthController.verify, taskController.createTask);
 app.delete('/tasks/:taskId', taskController.deleteTask);
 app.put('/tasks/:userId/:taskId', taskController.editTask);
 
-
 app.post("/register", userController.register);
 app.post("/login", AuthController.login);
 app.patch('/user/:userId', AuthController.verify, userController.updatePassword);

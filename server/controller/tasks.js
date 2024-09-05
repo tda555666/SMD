@@ -32,12 +32,18 @@ getTasks: async (req, res) => {
 //need to get the user id and the task id
 deleteTask: async (req, res) => {
     // userid from current user
+
     const { taskId } = req.params;
+
     try {
-        const result = await task.findByIdAndDelete(taskId);
-        res.status(204).send()
+        const result = await Task.findByIdAndDelete(taskId);
+        if (result) {
+            res.status(204).send();
+        } else {
+            res.status(404).json({ message: 'Task not found' });
+        }
     } catch (error) {
-        res.status(500).json({ message:  error.message });
+        res.status(500).json({ message: error.message });
     }
 },
 editTask: async (req, res) => {
