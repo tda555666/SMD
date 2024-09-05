@@ -6,7 +6,7 @@ import Modal from "react-modal";
 import { MdAdd } from "react-icons/md";
 import { getData } from "@/services/getData";
 
-const Dashboard = ({userId}) => {
+const Dashboard = ({userId,setUser}) => {
     const [openAddEditModal, setOpenAddEditModal] = useState({
         isShow: false,
         type: "add",
@@ -25,7 +25,7 @@ const Dashboard = ({userId}) => {
 
     useEffect(()=> {
         (async function() {
-             let result = await getData( userId , 'tasks')
+             let result = await getData( userId , 'tasks' ,setUser)
              
             if(result.status){
                 

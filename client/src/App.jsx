@@ -17,22 +17,20 @@ window.config = {
 };
 window.getAuthConfig = () => {
   let accessToken = localStorage.getItem('auth-access-token');
-  let refreshToken = localStorage.getItem('auth-refresh-token');
   
   
   if (accessToken) {
       return { ...config, headers: {...config.headers,
                                        authorization: `Bearer ${accessToken}`,
-                                       refresh: refreshToken }}
+                                       }}
 
   }else{
     return config;
   }
   
-      
-  
-  
+ 
 }
+
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -48,9 +46,9 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/contacts" element={ <Contacts /> } />
-          <Route path="/login" element={user.role == "guest"  ? <Login /> : <Dashboard userId={user.id}/>} />
-          <Route path="/signup" element={user.role == "guest"  ? <SignUp /> : <Dashboard userId={user.id}/>} />
-          <Route path="/dashboard" element={user.role == "guest"  ? <Login /> :<Dashboard userId={user.id}/>} />
+          <Route path="/login" element={user.role == "guest"  ? <Login /> : <Dashboard userId={user.id} setUser={setUser}/>} />
+          <Route path="/signup" element={user.role == "guest"  ? <SignUp /> : <Dashboard userId={user.id} setUser={setUser}/>} />
+          <Route path="/dashboard" element={user.role == "guest"  ? <Login /> :<Dashboard userId={user.id} setUser={setUser}/>} />
           {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>
       </Router>

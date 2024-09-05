@@ -19,7 +19,7 @@ module.exports = {
 
         }, process.env.JWT_SECRET,
         {
-            expiresIn: '300s'
+            expiresIn: '30s'
         }
         )
         
@@ -95,15 +95,15 @@ module.exports = {
         console.log(`REQUEST HEADER:\n`,req.headers);
 
         let authPart = req.headers.authorization || req.headers.Authorization;
-        let refresh = req.headers.refresh;
-        const {userId} = req.params ;
 
+        console.log('that the auth part')
         console.log(authPart);
+        
         
 
         if (!authPart || !authPart.startsWith('Bearer ')) 
             return res.status(401).json({auth:false,
-             msg: `You're not authorized`})
+             msg: `You're not authorized from verify `})
 
         // In the header the token is sent in the form:
         // Bearer aA85938Bc................
@@ -117,49 +117,93 @@ module.exports = {
         try{
             user = await jwtVerify(token,process.env.JWT_SECRET)
         }catch (err){
-            if(!refresh){
-                return res.status(401).json({auth:false,
-                    msg: `The token has been expired and no refresh token , you not authenticated`
-                })
-            }
             
-            try{
-                let user2 = await User.findOne({_id: userId ,refreshToken: refresh });
-                
-                if(!user2){
-                    return res.status(401).json({auth:false,
-                        msg: `The token has been expired and refresh not in db, you not authenticated`
-                        })
-                        
-                }
-
-                await jwtVerify(refresh,process.env.JWT_REFRESH)
-
-            }catch (err){
-                return res.status(403).json({auth:false,
-                    msg: `The both tokens have been expired`
-                });  
+            return res.status(403).json({auth:false,
+                msg: `The Access token have been expired`
+            });  
             
-            }
         }
            
          // for some useful case, let's add the decoded payload to the request
          // for the sake of the next function     
         req.user = user;
-        req.newAccessToken = module.exports.generateAccessToken(user);
-        req.newRefreshToken = module.exports.generateRefreshToken(user);
-         
-        try{
-            const updatedUser = await User.findByIdAndUpdate(user.id, 
-            {refreshToken:req.newRefreshToken},{ new:true }) 
-            next();    
 
-        }catch(err){
-            return res.status(500).json({auth:false,
-                msg: `could not update refresh token in db , \n ${err.message}`
-            });
-        }
+        next();    
         
+    },
+
+    refresh: async (req, res) => {
+        // take the refresh token from the user 
+        //const cookies = req.cookies;
+        const { userId , refreshToken} = req.body ;
+
+        console.log('that is the enter to refresh');
+        console.log('this is the refresh \n ' + refreshToken);
+
+        
+        
+
+        // send err if there is no token or it is invalid
+        if (!refreshToken) {
+            console.log(`\n*** NO REFRESH TOKEN ***\n`)
+            return res.status(401).json({auth: false, msg: `You're not authenticated, no token`});
+        } 
+            
+        console.log(`\n********\nuserId: ${userId} \nrefreshToken: ${refreshToken}`)
+        
+        let user ;
+        try{
+            user = await User.findOne({ refreshToken ,_id:userId });
+            
+            console.log(`user:\n`,user)
+
+            if (!user) {
+                
+                console.log(`\n*** NO USER ***\n`)
+                
+                return res.status(401).json({auth: false, msg: `Refresh token was not found`});    
+                
+            }
+        }catch(err){
+            return res.status(500).json({auth: false,msg: `while looking for refresh token , err:\n ${err.message}`})
+        }
+
+        
+        try {
+
+            const jwtVerify = util.promisify(jwt.verify);
+
+            const decodedUser = await jwtVerify(refreshToken,process.env.JWT_REFRESH);
+        
+        } catch (err) {
+
+            console.log(err)
+            console.log(err.massege)
+                
+            console.log(`\n*** TOKEN NOT VERIFIED ***\n`)
+            return res.status(403).json({auth: false, 
+                                msg: `Your session has been expired`});
+
+        }
+
+        console.log('this is the user' + user);
+        
+
+        let newAccessToken = module.exports.generateAccessToken(user);
+        let newRefreshToken = module.exports.generateRefreshToken(user);
+        console.log(`newAccessToken decoded: \n`,jwtDecode(newAccessToken))
+        
+        try{
+
+            const updatedUser = await User.findByIdAndUpdate(userId, 
+                {refreshToken:newRefreshToken},{ new:true })   //tbd try-catch
+    
+            //res.cookie('jwt', newRefreshToken, { httpOnly: true, secure: true, sameSite: 'None', maxAge: 24 * 60 * 60 * 1000 });
+            res.send({auth:true,accessToken: newAccessToken,refreshToken: newRefreshToken});
+        }catch(err){
+            return res.status(500).json({auth: false,msg: `while updating refresh token in db , err:\n ${err.message}`})
+        }
+    
     },
 
     

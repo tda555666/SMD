@@ -36,10 +36,66 @@ export const login = async (formData) => {
     }
 };
 
-export const updateTokens = (tokens) => {
 
-    localStorage.setItem('auth-access-token', tokens.newAccessToken);
-    localStorage.setItem('auth-refresh-token', tokens.newRefreshToken);
+
+export const refresh = async (userId , setUser ) => {
+     
+    
+    let refreshToken = localStorage.getItem('auth-refresh-token');
+
+    
+    if(!refreshToken){
+        console.log('no refresh token in local storage');
+        return {success: false}
+        
+    }
+
+    console.log('going to refresh access token');
+
+    try{
+        console.log('trying to refresh');
+        
+        let result1 = await axios.patch(`${baseAPIURL}/user/refresh-token`, {userId ,refreshToken}, config);
+        
+        
+        localStorage.setItem('auth-access-token', result1.data.accessToken);
+        localStorage.setItem('auth-refresh-token', result1.data.refreshToken);
+        return { success: true };
+
+    }catch(err){
+        console.log('that the error message in the refresh');
+        
+        console.log('message from the refresh' + ' ' + err.response.data.msg);
+        
+        logout(setUser)
+        return{success: false}
+        
+    }
+       
+}
+
+export const logout = async (setUser) => {
+
+    const user = JSON.parse(localStorage.getItem('smdUser'));
+
+    if(!user){
+        return {success:false}
+    }
+    
+    try{
+        const response = await axios.patch(`${baseAPIURL}/user-delete-refresh/${user.id}`);
+
+        localStorage.removeItem('auth-access-token');
+        localStorage.removeItem('auth-refresh-token');
+        localStorage.removeItem('smdUser');
+    
+        setUser({ role: 'guest' });
+    
+        return {success:true}
+    }
+    catch(err) {
+        return {success:false}
+    }
 
 }
 
