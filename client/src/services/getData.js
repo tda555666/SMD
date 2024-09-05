@@ -39,3 +39,17 @@ export const getData = async (userId , whatContent ,setUser) => {
         return { status: false, msg:err.response.data.msg };
     }
 };
+
+
+export const deleteTask = async (taskId) => {
+    try {
+        let result = await axios.delete(`${baseAPIURL}/tasks/${taskId}`);
+        alert('Task deleted successfully');
+        return { status: true, data : result.data };
+
+    } catch (error) {
+        console.error('There was an error deleting the task!', error);
+        alert('Failed to delete the task');
+        
+    }
+};

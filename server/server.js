@@ -34,7 +34,7 @@ app.use(bodyParser.json());
 
 app.get('/tasks/:userId',AuthController.verify, taskController.getTasks);
 app.post('/tasks/:userId', AuthController.verify, taskController.createTask);
-app.delete('/tasks/:userId', taskController.deleteTask);
+app.delete('/tasks/:taskId', taskController.deleteTask);
 app.put('/tasks/:userId/:taskId', taskController.editTask);
 
 app.post("/register", userController.register);

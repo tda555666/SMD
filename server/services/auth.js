@@ -135,9 +135,11 @@ module.exports = {
     refresh: async (req, res) => {
         // take the refresh token from the user 
         //const cookies = req.cookies;
-        const { userId , refreshToken} = req.body ;
 
         console.log('that is the enter to refresh');
+        const { userId , refreshToken} = req.body ;
+
+        
         console.log('this is the refresh \n ' + refreshToken);
 
         

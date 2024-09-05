@@ -32,7 +32,9 @@ getTasks: async (req, res) => {
 //need to get the user id and the task id
 deleteTask: async (req, res) => {
     // userid from current user
-    const { taskId } = req.body
+
+    const { taskId } = req.params;
+
     try {
         const result = await Task.findByIdAndDelete(taskId);
         if (result) {

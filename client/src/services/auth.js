@@ -54,8 +54,13 @@ export const refresh = async (userId , setUser ) => {
 
     try{
         console.log('trying to refresh');
+        console.log(userId);
+        console.log(refreshToken);
+        
+        
         
         let result1 = await axios.patch(`${baseAPIURL}/user/refresh-token`, {userId ,refreshToken}, config);
+        console.log('*******************that fter sending the result**************');
         
         
         localStorage.setItem('auth-access-token', result1.data.accessToken);
