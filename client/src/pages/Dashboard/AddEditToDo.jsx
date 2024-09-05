@@ -21,7 +21,7 @@ const AddEditToDo = ({ addTask, onClose, type, initialData }) => {
         }
         try {
             const response = await axios.post(
-                `${baseAPIURL}/tasks/${user.id}`, // Make sure baseAPIURL is defined
+                `${baseAPIURL}/tasks/${user.id}`, 
                 {
                     title,
                     content,

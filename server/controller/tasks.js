@@ -18,7 +18,7 @@ createTask: async (req, res) => {
     }
 },
 getTasks: async (req, res) => {
-    const taskId = req.body
+    // const taskId = req.body
     let userId = req.params.userId;
     try {
         // Add task to the database
@@ -33,7 +33,7 @@ getTasks: async (req, res) => {
 //need to get the user id and the task id
 deleteTask: async (req, res) => {
     // userid from current user
-    let {taskId} = req.body
+    const { taskId } = req.params;
     try {
         const result = await task.findByIdAndDelete(taskId);
         res.status(204).send()
@@ -59,9 +59,6 @@ editTask: async (req, res) => {
     }
 }
 }
-
-
-
 
 
 module.exports = TaskController;

@@ -32,15 +32,16 @@ app.use(bodyParser.json());
 
 //here starts the routing 
 
-app.get('/tasks/:userId', AuthController.verify, taskController.getTasks);
+app.get('/tasks/:userId',AuthController.verify, taskController.getTasks);
 app.post('/tasks/:userId', AuthController.verify, taskController.createTask);
-app.delete('/tasks/:userId', taskController.deleteTask);
+app.delete('/tasks/:taskId', taskController.deleteTask);
 app.put('/tasks/:userId/:taskId', taskController.editTask);
 
 app.post("/register", userController.register);
 app.post("/login", AuthController.login);
 app.patch('/user/:userId', AuthController.verify, userController.updatePassword);
-app.patch('/user-delete/:userId', userController.deleteRefresh);
+app.patch('/user-delete-refresh/:userId', userController.deleteRefresh);
+app.patch('/user/refresh-token', AuthController.refresh);
 
 
 
