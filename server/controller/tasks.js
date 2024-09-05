@@ -18,7 +18,7 @@ createTask: async (req, res) => {
     }
 },
 getTasks: async (req, res) => {
-    const taskId = req.body
+    // const taskId = req.body
     let userId = req.params.userId;
     try {
         // Add task to the database
@@ -59,9 +59,6 @@ editTask: async (req, res) => {
     }
 }
 }
-
-
-
 
 
 module.exports = TaskController;

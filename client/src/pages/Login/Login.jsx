@@ -2,7 +2,7 @@ import PasswordInput from "../../components/Input/PasswordInput";
 import { validateEmail } from "../../utils/helper";
 import { Link ,useNavigate } from "react-router-dom";
 import { useState ,useContext ,useEffect } from "react";
-import { getData } from "../../services/auth"
+import { login} from "../../services/auth"
 import { userContext } from "../../context/userContext";
 
 
@@ -36,15 +36,18 @@ const Login = () => {
 
     if (Object.values(formData).every(v => v)) {
       try {
-        const result = await getData(formData);
+        const result = await login(formData);
         console.log('Result:', result); 
+
         if (result.status) {
           let curr = JSON.parse(localStorage.getItem('smdUser'));
           console.log('Current User:', curr); 
           setUser(curr);
           setFormData({email:'',password:''});
           navigate('/dashboard');
+
         } else {
+
           setErrMsg(result.message);
           console.error('Error message:', result.message);
         }

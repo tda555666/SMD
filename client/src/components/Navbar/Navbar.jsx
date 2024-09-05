@@ -3,7 +3,7 @@ import ProfileInfo from "../Cards/ProfileInfo";
 import SearchBar from "../SearchBar/SearchBar";
 import { useState, useContext } from "react";
 import { userContext } from "../../context/userContext";
-import axios from "axios";
+import { logout } from "../../services/auth";
 
 function Navbar() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -11,20 +11,8 @@ function Navbar() {
   const { user, setUser } = useContext(userContext);
 
   const handleLogout = async () => {
-
-    const user = JSON.parse(localStorage.getItem('smdUser'));
-
-    const response = await axios.patch(`${baseAPIURL}/user-delete/${user.id}`);
-
-    if (response.status !== 200) {
-        throw new Error('Failed to remove refresh token');
-    }
-
-    localStorage.removeItem('auth-access-token');
-    localStorage.removeItem('auth-refresh-token');
-    localStorage.removeItem('smdUser');
-
-    setUser("null");
+    
+    logout(setUser)
 
     navigate("/");
   }
@@ -50,7 +38,7 @@ function Navbar() {
         <li className="ml-5">
           <Link to="/contacts">Contacts</Link>
         </li>
-        {user && user.role !== "guest" ? (
+        { user.role !== "guest" ? (
           <li className="ml-5">
             <Link to="/dashboard">Tasks</Link>
           </li>
