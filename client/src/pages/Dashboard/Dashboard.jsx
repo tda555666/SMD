@@ -13,7 +13,7 @@ const Dashboard = ({userId,setUser}) => {
         data: null,
     });
 
-    const[tasks,setTasks] = useState([])
+    const[tasks, setTasks] = useState([])
 
     const handleCloseModal = () => {
         setOpenAddEditModal({
@@ -24,11 +24,9 @@ const Dashboard = ({userId,setUser}) => {
     };
 
     useEffect(()=> {
-        (async function() {
-             let result = await getData( userId , 'tasks' ,setUser)
-             
-            if(result.status){
-                
+        (async function () {
+            let result = await getData(userId, 'tasks', setUser)
+             if(result.status){
                 setTasks(result.data)
             }
         })();
@@ -48,7 +46,7 @@ const Dashboard = ({userId,setUser}) => {
             content={t.content}
             tags={t.tags.join(', ')}
             isPinned={true}
-            onEdit={() => {}}
+            onEdit={() => {<AddEditToDo taskId={t._id}/>}}
             onDelete={() => {}}
             onPinNote={() => {}}
         />
