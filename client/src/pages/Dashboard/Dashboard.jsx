@@ -1,18 +1,29 @@
-import Notecard from "@/components/Cards/Notecard";
+import Notecard from "../../components/Cards/Notecard";
 import AddEditToDo from "./AddEditToDo";
-import { useState , useEffect} from "react";
+import { useState, useEffect } from "react";
 import Modal from "react-modal";
 import { MdAdd } from "react-icons/md";
-import { getData , deleteTask} from "@/services/getData";
+import { getData, deleteTask } from "@/services/getData";
 
-const Dashboard = ({userId,setUser}) => {
+const Dashboard = ({ userId, setUser }) => {
     const [openAddEditModal, setOpenAddEditModal] = useState({
         isShow: false,
         type: "add",
         data: null,
     });
 
-    const[tasks, setTasks] = useState([])
+    const [tasks, setTasks] = useState([]);
+
+    useEffect(() => {
+        (async function () {
+            let result = await getData(userId, 'tasks', setUser);
+            if (result.status) {
+                setTasks(result.data);
+                console.log(result.data[0]);
+                console.log('this is tasks' + tasks);
+            }
+        })();
+    }, [userId, setUser]);
 
     const handleCloseModal = () => {
         setOpenAddEditModal({
@@ -22,23 +33,10 @@ const Dashboard = ({userId,setUser}) => {
         });
     };
 
-    useEffect(()=> {
-        (async function () {
-            let result = await getData(userId, 'tasks', setUser)
-             if(result.status){
-                setTasks(result.data)
-                console.log(result.data[0]);
-                console.log('this is tasks' + tasks);
-                
-                
-            }
-        })();
-    },[])
-
-    const handleDelete = async (taskId, tasks) => {
+    const handleDelete = async (taskId) => {
         try {
             await deleteTask(taskId);
-            setTasks(tasks.filter(task => task._id !== taskId)); 
+            setTasks(tasks.filter(task => task._id !== taskId));
         } catch (error) {
             console.error('Error during task deletion:', error);
         }
@@ -47,40 +45,40 @@ const Dashboard = ({userId,setUser}) => {
     const handleCheckboxChange = (taskId) => (event) => {
         const isChecked = event.target.checked;
         setTasks(tasks.map(task =>
-          task._id === taskId ? { ...task, isChecked } : task
+            task._id === taskId ? { ...task, isChecked } : task
         ));
-      };
+    };
 
-   
-    
+    const handleEdit = (task) => {
+        setOpenAddEditModal({
+            isShow: true,
+            type: "edit",
+            data: task,
+        });
+    };
 
-    function addTask(newTask){
-        setTasks([...tasks, newTask])
+    function addTask(newTask) {
+        setTasks([...tasks, newTask]);
     }
 
-    const cardsArr = tasks.length===0 ? <p>no more tasks</p> : 
-        tasks.map((t,id)=> (
-        <Notecard 
-            key={t._id}
-            title={t.title}
-            date={t.createdAt}
-            content={t.content}
-            tags={t.tags.join(', ')}
-            isPinned={true}
-
-           
-           
-
-            onEdit={() => {<AddEditToDo taskId={t._id}/>}}
-            onDelete={() =>  handleDelete(t._id, tasks)}
-
-            onPinNote={() => {}}
-            onCheckboxChange={() => {handleCheckboxChange(t._id)}}
-        />
-        
-        
-    ));
-    
+    const cardsArr = tasks.length === 0 ? (
+        <p>No more tasks</p>
+    ) : (
+        tasks.map((t) => (
+            <Notecard
+                key={t._id}
+                title={t.title}
+                date={t.createdAt}
+                content={t.content}
+                tags={t.tags.join(', ')}
+                isPinned={true}
+                onEdit={() => handleEdit(t)} // Pass the whole task to handleEdit
+                onDelete={() => handleDelete(t._id)}
+                onPinNote={() => {}}
+                onCheckboxChange={() => handleCheckboxChange(t._id)}
+            />
+        ))
+    );
 
     return (
         <>
@@ -114,10 +112,12 @@ const Dashboard = ({userId,setUser}) => {
                 contentLabel=""
                 className="w-[40%] max-h-3/4 bg-white rounded-md mx-auto mt-14 p-5 overflow-scroll"
             >
-                <AddEditToDo onClose={handleCloseModal} 
-                                type={openAddEditModal.type} 
-                                initialData={openAddEditModal.data} 
-                                addTask={addTask}/>
+                <AddEditToDo
+                    onClose={handleCloseModal}
+                    type={openAddEditModal.type}
+                    initialData={openAddEditModal.data}
+                    addTask={addTask}
+                />
             </Modal>
         </>
     );

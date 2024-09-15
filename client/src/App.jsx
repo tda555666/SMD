@@ -8,6 +8,9 @@ import Dashboard from "./pages/Dashboard/Dashboard";
 import Navbar from "./components/Navbar/Navbar";
 import { userContext } from "./context/userContext";
 import { useState } from "react";
+import React from "react";
+
+const Chat = React.lazy(() => import("chat/App"));
 
 window.baseAPIURL = 'http://localhost:3055';
 window.config = {
@@ -41,6 +44,7 @@ function App() {
   return (
     <userContext.Provider value={{ user ,setUser }}>
       <Router>
+        
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
@@ -49,6 +53,7 @@ function App() {
           <Route path="/login" element={user.role == "guest"  ? <Login /> : <Dashboard userId={user.id} setUser={setUser}/>} />
           <Route path="/signup" element={user.role == "guest"  ? <SignUp /> : <Dashboard userId={user.id} setUser={setUser}/>} />
           <Route path="/dashboard" element={user.role == "guest"  ? <Login /> :<Dashboard userId={user.id} setUser={setUser}/>} />
+          <Route path="/chat" element={<Chat />} />
           {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>
       </Router>

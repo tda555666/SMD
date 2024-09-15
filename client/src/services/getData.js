@@ -53,3 +53,25 @@ export const deleteTask = async (taskId) => {
         
     }
 };
+
+export const getTasktoEdit = async (taskId , setTitle ,setContent ,setTags) => {
+    
+    try{
+
+        const result = await axios.get(`${baseAPIURL}/tasks/${taskId}`, getAuthConfig());
+    
+        if (result.status === 200) {
+
+            setTitle(result.data.title);
+
+            setContent(result.data.content);
+
+            setTags(result.data.tags || []);
+        }
+    }catch(err){
+        console.error('There was an error updating the task!', error);
+
+        alert('Failed to update the task');
+    }
+};
+
