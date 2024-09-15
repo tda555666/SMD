@@ -3,7 +3,7 @@ import { useState, useContext } from "react";
 import axios from "axios";
 import { userContext } from "@/context/userContext"; // Ensure this import is correct
 
-const AddEditToDo = ({ addTask, onClose, type, initialData }) => {
+const AddEditToDo = ({ addTask, onClose, type, initialData, taskId}) => {
     const { user } = useContext(userContext); // Get user context
 
     // Initialize state for tags, title, and content
