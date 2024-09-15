@@ -5,7 +5,7 @@ import danielImg from "../../assets/imgs/Daniel.jpeg";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import Navbar from "@/components/Navbar/Navbar";
+
 
 function About() {
   const data = [
@@ -13,7 +13,7 @@ function About() {
       id: "1",
       name: "Mark HAgever",
       img: markImg,
-      review: `immegrant from germany`,
+      review: `immegrant from germany, wants to bring the third reich back`,
     },
     {
       id: "2",
@@ -33,6 +33,12 @@ function About() {
       img: danielImg,
       review: `immegrant from ethopia`,
     },
+    {
+      id: "5",
+      name: `Sveta `,
+      img: pokemon,
+      review: `the Pokemon that speack humany`,
+    }
   ];
   const settings = {
     accessibility: true,
