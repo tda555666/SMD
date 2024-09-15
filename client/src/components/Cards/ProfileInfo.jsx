@@ -1,7 +1,7 @@
 // ProfileInfo.jsx
 import { useContext } from 'react';
 import PropTypes from 'prop-types';
-import { userContext } from '@/context/userContext'; // Update the import to match your context file
+import { userContext } from '../../context/userContext'; // Update the import to match your context file
 import { getInitials } from '@/utils/helper';
 
 function ProfileInfo({ onLogout }) {
