@@ -12,7 +12,7 @@ import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import { userContext } from "./context/userContext";
 import ChatProvider from "./context/chatContext";  // Import the ChatProvider
 
-
+const Chat = React.lazy(() => import('chat/App'));
 
 window.baseAPIURL = 'http://localhost:3055';
 window.config = {
