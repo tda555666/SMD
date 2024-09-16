@@ -32,7 +32,7 @@ function App() {
   });
 
   return (
-<<<<<<< HEAD
+
     <userContext.Provider value={{ user, setUser }}>
       <ChatProvider > {/* Wrap with ChatProvider */}
         <Router>
@@ -44,29 +44,13 @@ function App() {
             <Route path="/login" element={user.role === "guest" ? <Login /> : <Dashboard userId={user.id} setUser={setUser} />} />
             <Route path="/signup" element={user.role === "guest" ? <SignUp /> : <Dashboard userId={user.id} setUser={setUser} />} />
             <Route path="/dashboard" element={user.role === "guest" ? <Login /> : <Dashboard userId={user.id} setUser={setUser} />} />
-            
+            <Route path="/chat" element={<Chat />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
           </Routes>
         </Router>
       </ChatProvider>
-=======
-    <userContext.Provider value={{ user ,setUser }}>
-      <Router>
-        
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contacts" element={ <Contacts /> } />
-          <Route path="/login" element={user.role == "guest"  ? <Login /> : <Dashboard userId={user.id} setUser={setUser}/>} />
-          <Route path="/signup" element={user.role == "guest"  ? <SignUp /> : <Dashboard userId={user.id} setUser={setUser}/>} />
-          <Route path="/dashboard" element={user.role == "guest"  ? <Login /> :<Dashboard userId={user.id} setUser={setUser}/>} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
-          {/* <Route path="*" element={<NotFound />} /> */}
-        </Routes>
-      </Router>
->>>>>>> origin/main
+
     </userContext.Provider>
   );
 }
