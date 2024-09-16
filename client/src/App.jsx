@@ -7,6 +7,8 @@ import Contacts from "./pages/Contacts/Contacts";
 import Home from "./pages/Home/Home";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Navbar from "./components/Navbar/Navbar";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import { userContext } from "./context/userContext";
 import ChatProvider from "./context/chatContext";  // Import the ChatProvider
 
@@ -30,6 +32,7 @@ function App() {
   });
 
   return (
+<<<<<<< HEAD
     <userContext.Provider value={{ user, setUser }}>
       <ChatProvider > {/* Wrap with ChatProvider */}
         <Router>
@@ -45,6 +48,25 @@ function App() {
           </Routes>
         </Router>
       </ChatProvider>
+=======
+    <userContext.Provider value={{ user ,setUser }}>
+      <Router>
+        
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contacts" element={ <Contacts /> } />
+          <Route path="/login" element={user.role == "guest"  ? <Login /> : <Dashboard userId={user.id} setUser={setUser}/>} />
+          <Route path="/signup" element={user.role == "guest"  ? <SignUp /> : <Dashboard userId={user.id} setUser={setUser}/>} />
+          <Route path="/dashboard" element={user.role == "guest"  ? <Login /> :<Dashboard userId={user.id} setUser={setUser}/>} />
+          <Route path="/chat" element={<Chat />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          {/* <Route path="*" element={<NotFound />} /> */}
+        </Routes>
+      </Router>
+>>>>>>> origin/main
     </userContext.Provider>
   );
 }

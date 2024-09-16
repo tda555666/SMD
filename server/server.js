@@ -69,9 +69,12 @@ app.patch('/user/:userId', AuthController.verify, userController.updatePassword)
 app.patch('/user-delete-refresh/:userId', userController.deleteRefresh);
 app.patch('/user/refresh-token', AuthController.refresh);
 
+app.post('/forgot-password', userController.requestPasswordReset);
+app.post('/request-password-reset', userController.requestPasswordReset);
+app.post('/reset-password', userController.resetPassword);
+
 // Start the server
 const port = process.env.PORT || 3055;
 server.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
-
