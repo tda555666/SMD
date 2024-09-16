@@ -6,6 +6,8 @@ import Contacts from "./pages/Contacts/Contacts";
 import Home from "./pages/Home/Home";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Navbar from "./components/Navbar/Navbar";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword/ResetPassword";
 import { userContext } from "./context/userContext";
 import { useState } from "react";
 import React from "react";
@@ -54,6 +56,8 @@ function App() {
           <Route path="/signup" element={user.role == "guest"  ? <SignUp /> : <Dashboard userId={user.id} setUser={setUser}/>} />
           <Route path="/dashboard" element={user.role == "guest"  ? <Login /> :<Dashboard userId={user.id} setUser={setUser}/>} />
           <Route path="/chat" element={<Chat />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           {/* <Route path="*" element={<NotFound />} /> */}
         </Routes>
       </Router>
