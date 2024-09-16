@@ -41,8 +41,6 @@ const Dashboard = ({ userId, setUser }) => {
         });
     };
 
-  
-
     const handleDelete = async (taskId) => {
         try {
             await deleteTask(taskId);
@@ -98,7 +96,7 @@ const Dashboard = ({ userId, setUser }) => {
                 </div>
             </div>
 
-            <div className="fixed bottom-5 right-5 flex gap-4">
+            <div className="fixed bottom-5 right-5 flex gap-4 z-50">
                 <button
                     className="w-16 h-16 flex items-center justify-center rounded-2xl text-white font-medium bg-primary"
                     onClick={() => {
@@ -115,7 +113,6 @@ const Dashboard = ({ userId, setUser }) => {
                 <button
                     className="w-16 h-16 flex items-center justify-center rounded-2xl text-white font-medium bg-secondary"
                     onClick={handleToggleChatModal} // Toggle chat modal visibility
-                    style={{ position: 'fixed', bottom: '20px', right: '20px' }} // Adjust position of the button
                 >
                     <MdChat className="text-[32px] text-white" />
                 </button>
@@ -128,9 +125,20 @@ const Dashboard = ({ userId, setUser }) => {
                     overlay: {
                         backgroundColor: "rgba(0, 0, 0, 0.2)",
                     },
+                    content: {
+                        position: 'absolute',
+                        top: '10%',
+                        left: '50%',
+                        transform: 'translate(-50%, 0)',
+                        width: '40%',
+                        maxHeight: '80%',
+                        overflowY: 'auto',
+                        padding: '20px',
+                        borderRadius: '8px',
+                        backgroundColor: 'white',
+                    }
                 }}
-                contentLabel=""
-                className="w-[40%] max-h-3/4 bg-white rounded-md mx-auto mt-14 p-5 overflow-scroll"
+                contentLabel="Add/Edit ToDo Modal"
             >
                 <AddEditToDo
                     onClose={handleCloseModal}
@@ -141,27 +149,29 @@ const Dashboard = ({ userId, setUser }) => {
             </Modal>
 
             <Modal
-            isOpen={chatModal} // Use boolean state to control modal visibility
-            onRequestClose={handleToggleChatModal} // Close chat modal when overlay is clicked
-            style={{
-            overlay: {
-                backgroundColor: "rgba(0, 0, 0, 0.1)",
-            },
-            content: {
-                position: 'absolute',
-                top: '65px', // Distance from the top of the viewport
-                left: '79%', // Distance from the right side of the viewport
-                width: '300px', // Width of the modal
-                height: '500px', // Height of the modal
-            }
-            }}
-            contentLabel="Chat Modal"
-            shouldCloseOnOverlayClick={true} // Allow closing modal by clicking overlay
+                isOpen={chatModal} // Use boolean state to control modal visibility
+                onRequestClose={handleToggleChatModal} // Close chat modal when overlay is clicked
+                style={{
+                    overlay: {
+                        backgroundColor: "rgba(0, 0, 0, 0.2)",
+                    },
+                    content: {
+                        position: 'absolute',
+                        top: '10%', // Adjust to ensure it doesn't overlap with the Add/Edit modal
+                        left: '79%',
+                        width: '300px',
+                        height: '500px',
+                        borderRadius: '8px',
+                        padding: '20px',
+                        backgroundColor: 'white',
+                    }
+                }}
+                contentLabel="Chat Modal"
+                shouldCloseOnOverlayClick={true} // Allow closing modal by clicking overlay
             >
-            <Chat
-            onClose={handleToggleChatModal} 
-            className="bg-secondary" // Close the chat modal when this function is called
-            />
+                <Chat
+                    onClose={handleToggleChatModal} // Close the chat modal when this function is called
+                />
             </Modal>
         </>
     );
