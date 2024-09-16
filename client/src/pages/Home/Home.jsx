@@ -44,16 +44,31 @@
 
 // export default Home;
 
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { userContext } from "../../context/userContext";
 import todo from "../../assets/imgs/todo.jpg";
 import cover from "../../assets/imgs/todocover2.jpg";
 import { Link } from "react-router-dom";
+import { useChat } from "../../context/chatContext";
+import { MdChat } from "react-icons/md";
+import Modal from "react-modal";
+
+// Set the app element for accessibility
+Modal.setAppElement('#root'); // or '#your-root-element-id'
 
 function Home() {
   const { user } = useContext(userContext);
-
   const isLoggedIn = user && user.role !== 'guest';
+
+  const { Chat } = useChat(); // Use the Chat component from context
+
+  const [chatModal, setChatModal] = useState(false);
+
+  const handleToggleChatModal = () => {
+    setChatModal((prev) => !prev); // Toggle the chat modal visibility
+  };
+
+  
 
   return (
     <>
@@ -121,6 +136,38 @@ function Home() {
             </p>
           </div>
         </div>
+
+        <button
+          className="w-16 h-16 flex items-center justify-center rounded-2xl text-white font-medium bg-secondary"
+          onClick={handleToggleChatModal} // Toggle chat modal visibility
+          style={{ position: 'fixed', bottom: '20px', right: '20px' }} // Adjust position of the button
+        >
+          <MdChat className="text-[32px] text-white" />
+        </button>
+
+          <Modal
+        isOpen={chatModal} // Use boolean state to control modal visibility
+        onRequestClose={handleToggleChatModal} // Close chat modal when overlay is clicked
+        style={{
+          overlay: {
+            backgroundColor: "rgba(0, 0, 0, 0.1)",
+          },
+          content: {
+            position: 'absolute',
+            top: '60px', // Distance from the top of the viewport
+            left: '79%', // Distance from the right side of the viewport
+            width: '300px', // Width of the modal
+            height: '500px', // Height of the modal
+          }
+        }}
+        contentLabel="Chat Modal"
+        shouldCloseOnOverlayClick={true} // Allow closing modal by clicking overlay
+        >
+        <Chat
+          onClose={handleToggleChatModal} 
+          className="bg-secondary" // Close the chat modal when this function is called
+        />
+        </Modal>
       </div>
     </>
   );

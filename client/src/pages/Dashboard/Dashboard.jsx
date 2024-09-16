@@ -1,9 +1,10 @@
+import React, { useState, useEffect } from "react";
 import Notecard from "../../components/Cards/Notecard";
 import AddEditToDo from "./AddEditToDo";
-import { useState, useEffect } from "react";
 import Modal from "react-modal";
-import { MdAdd } from "react-icons/md";
+import { MdAdd, MdChat } from "react-icons/md";
 import { getData, deleteTask } from "@/services/getData";
+import { useChat } from "../../context/chatContext"; // Import the custom hook for Chat context
 
 const Dashboard = ({ userId, setUser }) => {
     const [openAddEditModal, setOpenAddEditModal] = useState({
@@ -13,6 +14,13 @@ const Dashboard = ({ userId, setUser }) => {
     });
 
     const [tasks, setTasks] = useState([]);
+    const { Chat } = useChat(); // Use the Chat component from context
+
+    const [chatModal, setChatModal] = useState(false);
+  
+    const handleToggleChatModal = () => {
+      setChatModal((prev) => !prev); // Toggle the chat modal visibility
+    };
 
     useEffect(() => {
         (async function () {
@@ -32,6 +40,8 @@ const Dashboard = ({ userId, setUser }) => {
             data: null,
         });
     };
+
+  
 
     const handleDelete = async (taskId) => {
         try {
@@ -72,7 +82,7 @@ const Dashboard = ({ userId, setUser }) => {
                 content={t.content}
                 tags={t.tags.join(', ')}
                 isPinned={true}
-                onEdit={() => handleEdit(t)} // Pass the whole task to handleEdit
+                onEdit={() => handleEdit(t)}
                 onDelete={() => handleDelete(t._id)}
                 onPinNote={() => {}}
                 onCheckboxChange={() => handleCheckboxChange(t._id)}
@@ -88,18 +98,28 @@ const Dashboard = ({ userId, setUser }) => {
                 </div>
             </div>
 
-            <button
-                className="w-16 h-16 flex items-center justify-center rounded-2xl text-white font-medium bg-primary fixed bottom-5 right-5"
-                onClick={() => {
-                    setOpenAddEditModal({
-                        isShow: true,
-                        type: "add",
-                        data: null,
-                    });
-                }}
-            >
-                <MdAdd className="text-[32px] text-white" />
-            </button>
+            <div className="fixed bottom-5 right-5 flex gap-4">
+                <button
+                    className="w-16 h-16 flex items-center justify-center rounded-2xl text-white font-medium bg-primary"
+                    onClick={() => {
+                        setOpenAddEditModal({
+                            isShow: true,
+                            type: "add",
+                            data: null,
+                        });
+                    }}
+                >
+                    <MdAdd className="text-[32px] text-white" />
+                </button>
+
+                <button
+                    className="w-16 h-16 flex items-center justify-center rounded-2xl text-white font-medium bg-secondary"
+                    onClick={handleToggleChatModal} // Toggle chat modal visibility
+                    style={{ position: 'fixed', bottom: '20px', right: '20px' }} // Adjust position of the button
+                >
+                    <MdChat className="text-[32px] text-white" />
+                </button>
+            </div>
 
             <Modal
                 isOpen={openAddEditModal.isShow}
@@ -118,6 +138,30 @@ const Dashboard = ({ userId, setUser }) => {
                     initialData={openAddEditModal.data}
                     addTask={addTask}
                 />
+            </Modal>
+
+            <Modal
+            isOpen={chatModal} // Use boolean state to control modal visibility
+            onRequestClose={handleToggleChatModal} // Close chat modal when overlay is clicked
+            style={{
+            overlay: {
+                backgroundColor: "rgba(0, 0, 0, 0.1)",
+            },
+            content: {
+                position: 'absolute',
+                top: '65px', // Distance from the top of the viewport
+                left: '79%', // Distance from the right side of the viewport
+                width: '300px', // Width of the modal
+                height: '500px', // Height of the modal
+            }
+            }}
+            contentLabel="Chat Modal"
+            shouldCloseOnOverlayClick={true} // Allow closing modal by clicking overlay
+            >
+            <Chat
+            onClose={handleToggleChatModal} 
+            className="bg-secondary" // Close the chat modal when this function is called
+            />
             </Modal>
         </>
     );

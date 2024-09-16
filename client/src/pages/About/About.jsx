@@ -2,6 +2,7 @@ import markImg from "../../assets/imgs/Mark.jpeg";
 import davidImg from "../../assets/imgs/David.jpeg";
 import ivgeniImg from "../../assets/imgs/Ivgeni.jpeg";
 import danielImg from "../../assets/imgs/Daniel.jpeg";
+import pokemon from "../../assets/imgs/svetaImg.jpg";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";

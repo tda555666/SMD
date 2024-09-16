@@ -1,52 +1,52 @@
-import { useEffect, useState } from 'react';
-import io from 'socket.io-client'; // Importing Socket.IO client
+import { useEffect, useState, FormEvent } from 'react';
+import io from 'socket.io-client';
+import './chat.css'; // Ensure this path is correct
 
-// Adjust the URL to match your server's address
 const socket = io('http://localhost:3055');
 
 function Chat() {
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState<string>('');
   const [messages, setMessages] = useState<string[]>([]);
 
   useEffect(() => {
-    // Listen for chat messages from the server
     socket.on('message', (msg: string) => {
       setMessages((prevMessages) => [...prevMessages, `anonymous: ${msg}`]);
     });
 
-    // Cleanup on component unmount
     return () => {
       socket.off('message');
     };
   }, []);
 
-  const sendMessage = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault(); // Prevent the default form submission
+  const sendMessage = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
     if (message.trim()) {
-      socket.emit('message', message); // Send the message to the server
-      setMessage(''); // Clear the input field
+      socket.emit('message', message);
+      setMessage('');
     }
   };
 
   return (
-    <div>
-      <form id="input-form" onSubmit={sendMessage}>
-        <label htmlFor="message">Enter Message:</label>
+    <div className="chat-container">
+      <div className="messages-container">
+        {messages.map((msg, index) => (
+          <div key={index} className="message">
+            {msg}
+          </div>
+        ))}
+      </div>
+      <form id="input-form" onSubmit={sendMessage} className="input-form">
         <input
           type="text"
           id="message"
           name="message"
+          placeholder='Enter a message'
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
         <button type="submit">Send</button>
       </form>
-      <div id="messages">
-        {messages.map((msg, index) => (
-          <div key={index}>{msg}</div>
-        ))}
-      </div>
     </div>
   );
 }
