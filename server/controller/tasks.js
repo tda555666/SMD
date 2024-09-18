@@ -1,5 +1,6 @@
 const task = require("../model/Task");
 
+
 const TaskController = {
 // Create task
 createTask: async (req, res) => {
@@ -45,19 +46,26 @@ deleteTask: async (req, res) => {
     }
 },
 editTask: async (req, res) => {
-    const {taskId } = req.params;
+    const { taskId } = req.params;
     const { title, content, tags } = req.body;
 
     try {
-        const task = await task.findById(taskId);
+        const tasked = await task.findById(taskId); 
 
-        if (title !== undefined) task.title = title;
-        if (content !== undefined) task.content = content;
-        if (tags !== undefined) task.tags = tags;
-        const updatedTask = await task.save();
+        if (!tasked) {
+            return res.status(404).json({ message: 'Task not found' }); 
+        }
 
-     res.status(200).json({ message: 'Task updated successfully', task: updatedTask ,new:true });
+        // Update fields only if they are defined
+        if (title !== undefined) tasked.title = title;
+        if (content !== undefined) tasked.content = content;
+        if (tags !== undefined) tasked.tags = tags;
+
+        const updatedTask = await tasked.save(); 
+
+        res.status(200).json({ message: 'Task updated successfully', task: updatedTask });
     } catch (error) {
+        console.error('Error updating task:', error); // Log the error for debugging
         res.status(500).json({ message: error.message });
     }
 },

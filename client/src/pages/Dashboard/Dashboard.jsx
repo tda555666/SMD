@@ -4,43 +4,36 @@ import AddEditToDo from "./AddEditToDo";
 import Modal from "react-modal";
 import { MdAdd, MdChat } from "react-icons/md";
 import { getData, deleteTask } from "@/services/getData";
-import { useChat } from "../../context/chatContext"; // Import the custom hook for Chat context
+import { useChat } from "../../context/chatContext";
 
 const Dashboard = ({ userId, setUser }) => {
     const [openAddEditModal, setOpenAddEditModal] = useState({
         isShow: false,
         type: "add",
         data: null,
+        taskId: null,
     });
 
     const [tasks, setTasks] = useState([]);
-    const { Chat } = useChat(); // Use the Chat component from context
-
+    const { Chat } = useChat();
     const [chatModal, setChatModal] = useState(false);
-  
-    const handleToggleChatModal = () => {
-      setChatModal((prev) => !prev); // Toggle the chat modal visibility
-    };
 
+    // Fetch tasks on component mount
     useEffect(() => {
-        (async function () {
-            let result = await getData(userId, 'tasks', setUser);
+        (async () => {
+            const result = await getData(userId, 'tasks', setUser);
             if (result.status) {
                 setTasks(result.data);
-                console.log(result.data[0]);
-                console.log('this is tasks' + tasks);
             }
         })();
     }, [userId, setUser]);
 
+    // Close modal and reset state
     const handleCloseModal = () => {
-        setOpenAddEditModal({
-            isShow: false,
-            type: "add",
-            data: null,
-        });
+        setOpenAddEditModal({ isShow: false, type: "add", data: null, taskId: null });
     };
 
+    // Delete a task
     const handleDelete = async (taskId) => {
         try {
             await deleteTask(taskId);
@@ -50,40 +43,49 @@ const Dashboard = ({ userId, setUser }) => {
         }
     };
 
-    const handleCheckboxChange = (taskId) => (event) => {
-        const isChecked = event.target.checked;
-        setTasks(tasks.map(task =>
-            task._id === taskId ? { ...task, isChecked } : task
-        ));
-    };
-
+    // Open edit modal with task data
     const handleEdit = (task) => {
         setOpenAddEditModal({
             isShow: true,
             type: "edit",
             data: task,
+            taskId: task._id,
         });
     };
 
-    function addTask(newTask) {
-        setTasks([...tasks, newTask]);
-    }
+    // Add a new task
+    const addTask = (updatedTask) => {
+        setTasks((prevTasks) => {
+            // Check if we are updating an existing task
+            const existingTaskIndex = prevTasks.findIndex(task => task._id === updatedTask._id);
+            if (existingTaskIndex !== -1) {
+                // Update the existing task
+                const updatedTasks = [...prevTasks];
+                updatedTasks[existingTaskIndex] = { ...updatedTasks[existingTaskIndex], ...updatedTask };
+                return updatedTasks;
+            } else {
+                // Add the new task
+                return [...prevTasks, updatedTask];
+            }
+        });
+        handleCloseModal();
+    };
 
+    // Render task cards
     const cardsArr = tasks.length === 0 ? (
         <p>No more tasks</p>
     ) : (
-        tasks.map((t) => (
+        tasks.map((task) => (
             <Notecard
-                key={t._id}
-                title={t.title}
-                date={t.createdAt}
-                content={t.content}
-                tags={t.tags.join(', ')}
+                key={task._id}
+                title={task.title}
+                date={task.createdAt}
+                content={task.content}
+                tags={task.tags.join(', ')}
                 isPinned={true}
-                onEdit={() => handleEdit(t)}
-                onDelete={() => handleDelete(t._id)}
+                onEdit={() => handleEdit(task)}
+                onDelete={() => handleDelete(task._id)}
                 onPinNote={() => {}}
-                onCheckboxChange={() => handleCheckboxChange(t._id)}
             />
         ))
     );
@@ -104,6 +106,7 @@ const Dashboard = ({ userId, setUser }) => {
                             isShow: true,
                             type: "add",
                             data: null,
+                            taskId: null,
                         });
                     }}
                 >
@@ -112,7 +115,7 @@ const Dashboard = ({ userId, setUser }) => {
 
                 <button
                     className="w-16 h-16 flex items-center justify-center rounded-2xl text-white font-medium bg-secondary"
-                    onClick={handleToggleChatModal} // Toggle chat modal visibility
+                    onClick={() => setChatModal(prev => !prev)}
                 >
                     <MdChat className="text-[32px] text-white" />
                 </button>
@@ -122,9 +125,7 @@ const Dashboard = ({ userId, setUser }) => {
                 isOpen={openAddEditModal.isShow}
                 onRequestClose={handleCloseModal}
                 style={{
-                    overlay: {
-                        backgroundColor: "rgba(0, 0, 0, 0.2)",
-                    },
+                    overlay: { backgroundColor: "rgba(0, 0, 0, 0.2)" },
                     content: {
                         position: 'absolute',
                         top: '10%',
@@ -142,22 +143,20 @@ const Dashboard = ({ userId, setUser }) => {
             >
                 <AddEditToDo
                     onClose={handleCloseModal}
-                    type={openAddEditModal.type}
                     initialData={openAddEditModal.data}
+                    taskId={openAddEditModal.taskId}
                     addTask={addTask}
                 />
             </Modal>
-
+            
             <Modal
-                isOpen={chatModal} // Use boolean state to control modal visibility
-                onRequestClose={handleToggleChatModal} // Close chat modal when overlay is clicked
+                isOpen={chatModal}
+                onRequestClose={() => setChatModal(false)}
                 style={{
-                    overlay: {
-                        backgroundColor: "rgba(0, 0, 0, 0.2)",
-                    },
+                    overlay: { backgroundColor: "rgba(0, 0, 0, 0.2)" },
                     content: {
                         position: 'absolute',
-                        top: '10%', // Adjust to ensure it doesn't overlap with the Add/Edit modal
+                        top: '10%',
                         left: '79%',
                         width: '300px',
                         height: '500px',
@@ -167,11 +166,8 @@ const Dashboard = ({ userId, setUser }) => {
                     }
                 }}
                 contentLabel="Chat Modal"
-                shouldCloseOnOverlayClick={true} // Allow closing modal by clicking overlay
             >
-                <Chat
-                    onClose={handleToggleChatModal} // Close the chat modal when this function is called
-                />
+                <Chat onClose={() => setChatModal(false)} />
             </Modal>
         </>
     );

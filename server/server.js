@@ -50,8 +50,8 @@ app.use(bodyParser.json());
 
 app.use(
   cors({
-    origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5002', 'http://localhost:5000'],
-    methods: ['GET', 'POST', 'DELETE', 'PATCH'],
+    origin: ['http://localhost:5173', 'http://localhost:5174', 'http://localhost:5002', 'http://localhost:5000','http://localhost:3055'],
+    methods: ['GET', 'POST', 'DELETE', 'PATCH','PUT'],
     credentials: true,
   })
 );
